@@ -1,2 +1,5 @@
 # splitmeet_back
-Split Meet
+Split Meet Back
+
+
+[Repositorio del Frontend](https://github.com/eloiFabregaItb/splitmeet_front)
