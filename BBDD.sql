@@ -23,7 +23,8 @@ CREATE TABLE Messages (
     evt_id INT not null,
     msg_text TEXT not null,
     msg_timestamp DATE not null,
-    PRIMARY KEY (msg_id)
+    PRIMARY KEY (msg_id),
+    FOREIGN KEY (usr_id_creator) REFERENCES Users(usr_id)
 );
 
 CREATE TABLE Events (
@@ -82,3 +83,4 @@ CREATE TABLE Expensses_transaction (
     FOREIGN KEY (usr_id_lender) REFERENCES Users(usr_id),
     FOREIGN KEY (usr_id_borrower) REFERENCES Users(usr_id)
 );
+
