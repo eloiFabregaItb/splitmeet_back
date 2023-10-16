@@ -63,7 +63,7 @@ CREATE TABLE Expensses (
     exp_concept VARCHAR(255) NOT NULL,
     exp_description TEXT,
     exp_data DATE NOT NULL,
-    exp_coords DOUBLE,
+    exp_coords VARCHAR(255),
     exp_foto1 VARCHAR(255),
     exp_foto2 VARCHAR(255),
     exp_foto3 VARCHAR(255),
