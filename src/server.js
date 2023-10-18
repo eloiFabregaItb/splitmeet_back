@@ -1,13 +1,13 @@
 
 // ----------- MODULES -----------
+import {} from 'dotenv/config'
+
 import express from 'express'
 import bodyParser from 'body-parser'
-import dotenv from "dotenv"
 import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 import logger from 'morgan'
 import os from "os"
-import mysql from "mysql2"
 
 // own modules
 import router_test from "./routes/template.js"
@@ -17,20 +17,20 @@ import socketRecieverManager from './sockets/socketReciverManager.js'
 
 // ----------- CONFIG -----------
 
-dotenv.config()
 
 //api
 const PORT = process.env.PORT ?? 3000
 const app = express()
 const server = createServer(app)
 
-// BBDD
-export const db_connection = mysql.createConnection({
-  host: process.env.DB_URL,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_DATABASE
-})
+
+
+
+
+
+
+
+
 
 
 
