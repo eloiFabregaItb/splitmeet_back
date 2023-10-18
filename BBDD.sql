@@ -1,6 +1,6 @@
 CREATE TABLE Users (
     usr_id char(36) not null unique,
-    user_mail varchar(255) not null,
+    usr_mail varchar(255) not null,
     usr_name varchar(90) not null,
     usr_password varchar(255),
     usr_oauth boolean,
