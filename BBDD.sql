@@ -1,12 +1,13 @@
 CREATE TABLE Users (
     usr_id char(36) not null unique,
-    usr_mail varchar(255) not null,
+    usr_mail varchar(255) not null unique,
     usr_name varchar(90) not null,
     usr_password varchar(255),
     usr_oauth boolean,
     usr_img varchar(255),
     PRIMARY KEY (usr_id)
 );
+
 
 CREATE TABLE Friendships (
     usr_id1 char(36) not null,
