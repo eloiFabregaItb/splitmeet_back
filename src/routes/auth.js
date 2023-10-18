@@ -1,7 +1,7 @@
 import express from "express";
 // import { io } from "../server";
 
-import { db_connection } from "../server.js";
+import { db } from "../db/db.js";
 
 const router = express.Router()
 export default router
@@ -15,37 +15,35 @@ router.get('/', (req, res) => {
 
 
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   
-  if(!req.body.usr_mail || !req.body.password){
+  const {usr_mail,password} = req.body
+  if(!usr_mail || !password){
     return res.status(401).json({success:false,msg:'Usuario o contraseña no presente'})
   }
 
-  db_connection.connect();
-  
-  db_connection.query(
-    'SELECT usr_id FROM Users WHERE usr_mail = ? AND usr_password = ?',
-    [req.body.usr_mail,req.body.password],
-    function (error, results, fields) {
-      
+  try{
 
-      console.log(results)
-      
-      if (results.length === 0) {
-        // No user found, send a response with success:false
-        return res.json({ success: false });
-      } else {
-        // User found, send a response with success:true
-        return res.json({ success: true });
-      }
+    const [rows,fields] = await db.query(
+      "SELECT * FROM Users WHERE usr_mail = ? AND usr_password = ?",
+      [usr_mail,password]
+    )
+
+    if (!rows || rows.length === 0) {
+      // No user found, send a response with success:false
+      return res.json({ success: false, msg:"User/Password combo doesn't match"});
     }
-  )
+
+    const {usr_password,usr_id, ...publicUser} = rows[0]
+
+    return res.json({ success: true, usr_data:publicUser});
     
-  db_connection.end();
+
+  }catch(err){
+    console.log(err)
+    return res.json({ success: false, msg:"An error occurred" });
+  }
       
-  res.json({
-    success:true
-  })
 })
 
 
