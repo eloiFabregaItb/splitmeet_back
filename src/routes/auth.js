@@ -3,11 +3,14 @@ import express from "express";
 import jwt  from "jsonwebtoken";
 import { db } from "../db/db.js";
 import crypto from "crypto"
-import { jwtVerify } from "../utils/jwt.js";
+import { jwtSign, jwtVerify } from "../utils/jwt.js";
 
 
 const router = express.Router()
 export default router
+
+
+
 
 router.get('/', (req, res) => {
   res.json({test:true})
@@ -17,10 +20,41 @@ router.get('/', (req, res) => {
 
 
 router.post("/protected",jwtVerify,async(req,res)=>{
-
-  res.json({success:true,msg:"authentificated",user:req.user})
+  const {usr_id} = req
+  res.json({success:true,msg:"authentificated",user:req.by})
 })
 
+
+// LOGIN with JWT
+router.post('/loginjwt',jwtVerify, async (req, res) => {
+  try{
+    const {usr_id} = req
+
+    //query a la DB
+    const [rows,fields] = await db.query(
+      "SELECT * FROM Users WHERE usr_id = ?",
+      [req.usr_id]
+    )
+
+    //si no hay resultados
+    if (!rows || rows.length === 0) {
+      // No user found, send a response with success:false
+      return res.json({ success: false, msg:"User/Password combo doesn't match"});
+    }
+
+    //separar informacion sensible
+    const {usr_password,usr_id:usr_id2, ...publicUser} = rows[0]
+    // Create token
+    const token = jwtSign({usr_mail:publicUser.usr_mail, usr_id })
+    //retornar un success
+    return res.json({ success: true, ...publicUser,jwt:token});
+  }catch(err){
+    //en caso de error
+    console.log(err)
+    return res.json({ success: false, msg:"An error occurred" });
+  }
+      
+})
 
 
 // LOGIN
@@ -53,11 +87,7 @@ router.post('/login', async (req, res) => {
 
 
         // Create token
-        const token = jwt.sign(
-          {  usr_mail, usr_id },
-          process.env.JWT_SECRET,
-          {expiresIn: "2h"}
-        )
+        const token = jwtSign({usr_mail, usr_id })
     
 
     //retornar un success
@@ -97,11 +127,8 @@ router.post('/signup', async (req, res) => {
 
 
     // Create token
-    const token = jwt.sign(
-      {  usr_mail, usr_id:uuid },
-      process.env.JWT_SECRET,
-      {expiresIn: "2h"}
-    )
+    const token = jwtSign({usr_mail, usr_id })
+
 
     //retornar un success
     return res.json({ success: true, jwt:token});
