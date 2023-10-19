@@ -9,7 +9,6 @@ const db_pool = mysql.createPool({
 
 export const db = db_pool.promise();
 
-
 /*++++++++ EXAMPLE USAGE +++++++++++
 
 
