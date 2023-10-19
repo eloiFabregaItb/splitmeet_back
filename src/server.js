@@ -12,8 +12,13 @@ import os from "os"
 // own modules
 import router_test from "./routes/template.js"
 import router_auth from "./routes/auth.js"
+import userRoutes from './routes/user.js'; // Importa el archivo de rutas de usuario
 
 import socketRecieverManager from './sockets/socketReciverManager.js'
+
+//oauth modules
+import session from 'express-session';
+import passport from 'passport'
 
 // ----------- CONFIG -----------
 
@@ -22,16 +27,6 @@ import socketRecieverManager from './sockets/socketReciverManager.js'
 const PORT = process.env.PORT ?? 3000
 const app = express()
 const server = createServer(app)
-
-
-
-
-
-
-
-
-
-
 
 
 //socket.io
@@ -51,9 +46,20 @@ if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'))
 }
 
+app.use(session({
+  secret: 'secret_session',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // ----------- ENDPOINTS -----------
 app.use("/test",router_test)
 app.use("/auth",router_auth)
+app.use('/user', userRoutes);
 
 // ----------- SOCKET.IO -----------
 io.on('connection', socketRecieverManager)
