@@ -5,8 +5,8 @@ const router = express.Router()
 export default router
 
 router.get('/', (req, res) => {
-  res.send("hola :) test")
-  // io.send()
+  res.json({test:true})
+  // io.emmit("")
 })
 
 
