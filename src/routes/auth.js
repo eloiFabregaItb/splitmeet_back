@@ -116,12 +116,12 @@ router.post('/signup', async (req, res) => {
     return res.status(409).json({success:false,msg:'Campos requeridos'})
   }
 
-  const uuid = crypto.randomUUID()
+  const usr_id = crypto.randomUUID()
   const encryptedPassword = usr_pass // TODO await crypto.hash(usr_pass, 10);
 
   try{
     const [rows] = await db.query("INSERT INTO Users (usr_id,usr_mail,usr_name,usr_password,usr_oauth,usr_img) VALUES (?,?,?,?,?,?);",
-    [uuid,usr_mail.toLowerCase(),usr_name,encryptedPassword,0,"default.img"])
+    [usr_id,usr_mail.toLowerCase(),usr_name,encryptedPassword,0,"default.img"])
 
     console.log(rows)
 

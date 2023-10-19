@@ -19,7 +19,7 @@ import socketRecieverManager from './sockets/socketReciverManager.js'
 
 // ----------- CONFIG -----------
 
-
+const NODE_ENV = process.env.NODE_ENV || "production"
 //api
 const PORT = process.env.PORT ?? 3000
 const app = express()
@@ -27,7 +27,7 @@ const server = createServer(app)
 
 
 
-//DATABASE CONNECTION
+//DATABASE CONNECTION TESTING
 // const [rows] = await db.query("SELECT * FROM Users")
 // // const [rows] = await db.query("INSERT INTO Users (usr_id,usr_mail,usr_name,usr_password,usr_oauth,usr_img) VALUES (?,?,?,?,?,?);",
 // // ["6c1fbd83-9e4a-45f2-8d84-17f74289eloi","elgrefa@gmail.com","elioputo","miau",0,"default.img"])
@@ -49,7 +49,7 @@ export const io = new Server(server, {
 
 
 // ----------- MIDLEWARE -----------
-if(process.env.NODE_ENV === 'development'){
+if(NODE_ENV === 'development'){
   app.use(cors({
     origin: '*'
   }))
@@ -57,7 +57,7 @@ if(process.env.NODE_ENV === 'development'){
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-if (process.env.NODE_ENV === 'development') {
+if (NODE_ENV === 'development') {
   app.use(logger('dev'))
 }
 
@@ -72,7 +72,7 @@ io.on('connection', socketRecieverManager)
 // ----------- SERVER -----------
 server.listen(PORT, () => {
   // Find the IPv4 addresses for internal network interfaces
-  if(process.env.NODE_ENV === 'development'){
+  if(NODE_ENV === 'development'){
     const interfaces = os.networkInterfaces();
     const addresses = Object.values(interfaces)
       .flat()
