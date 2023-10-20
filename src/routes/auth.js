@@ -6,6 +6,8 @@ import crypto from "crypto"
 import { jwtSign, jwtVerify } from "../utils/jwt.js";
 import { db_getUserByJWT, db_getUserByMailPassword } from "../db/db_users.js";
 
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 const router = express.Router()
 export default router
@@ -115,6 +117,37 @@ router.post('/signup', async (req, res) => {
       
 })
 
+
+
+
+// Configure the Google OAuth strategy
+passport.use(new GoogleStrategy({
+  clientID: '384807507489-0u90koe30ia44ibbtqitqloipk193i8h.apps.googleusercontent.com',
+  clientSecret: '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',
+  callbackURL: 'http://localhost:3000/auth/google/callback', // Actualiza con tu URI de redirección
+}, (accessToken, refreshToken, profile, done) => {
+  // Save or retrieve user information as needed.
+  return done(null, profile);
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// Route to initiate Google authentication
+router.get('/google', passport.authenticate('google', {
+  scope: ['https://www.googleapis.com/auth/plus.login'],
+}));
+
+// Redirect route after successful authentication
+router.get('/google/callback', passport.authenticate('google', {
+  successRedirect: '/user/profile', // Redirect to the profile page (adjust as needed)
+  failureRedirect: '/', // Redirect to the main page in case of failure
+}));
 
 
 

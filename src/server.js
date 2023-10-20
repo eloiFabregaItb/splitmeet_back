@@ -14,8 +14,13 @@ import cors from "cors"
 // own modules
 import router_test from "./routes/template.js"
 import router_auth from "./routes/auth.js"
+import userRoutes from './routes/user.js'; // Importa el archivo de rutas de usuario
 
 import socketRecieverManager from './sockets/socketReciverManager.js'
+
+//oauth modules
+import session from 'express-session';
+import passport from 'passport'
 
 // ----------- CONFIG -----------
 
@@ -30,7 +35,6 @@ export const IS_IN_PRODUCTION = NODE_ENV !== NODE_ENV_DEVELOPMENT
 const PORT = process.env.PORT ?? 3000
 const app = express()
 const server = createServer(app)
-
 
 
 //DATABASE CONNECTION TESTING
@@ -65,9 +69,20 @@ if(!IS_IN_PRODUCTION){
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+app.use(session({
+  secret: 'secret_session',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // ----------- ENDPOINTS -----------
 app.use("/test",router_test)
 app.use("/auth",router_auth)
+app.use('/user', userRoutes);
 
 // ----------- SOCKET.IO -----------
 io.on('connection', socketRecieverManager)
