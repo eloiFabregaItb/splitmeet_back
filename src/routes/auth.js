@@ -5,6 +5,7 @@ import { db } from "../db/db.js";
 
 const router = express.Router();
 
+
 // Configure the Google OAuth strategy
 passport.use(new GoogleStrategy({
   clientID: '384807507489-0u90koe30ia44ibbtqitqloipk193i8h.apps.googleusercontent.com',
@@ -33,6 +34,8 @@ router.get('/google/callback', passport.authenticate('google', {
   successRedirect: '/user/profile', // Redirect to the profile page (adjust as needed)
   failureRedirect: '/', // Redirect to the main page in case of failure
 }));
+
+
 
 // Route to log in with username and password
 router.post('/login', async (req, res) => {
