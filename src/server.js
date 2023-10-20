@@ -8,7 +8,7 @@ import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 import logger from 'morgan'
 import os from "os"
-import { db } from './db/db.js'
+import db from './db/db.js'
 import cors from "cors"
 
 // own modules
@@ -20,6 +20,12 @@ import socketRecieverManager from './sockets/socketReciverManager.js'
 // ----------- CONFIG -----------
 
 const NODE_ENV = process.env.NODE_ENV || "production"
+const NODE_ENV_PRODUCTION = process.env.NODE_ENV_PRODUCTION || "production"
+const NODE_ENV_DEVELOPMENT = process.env.NODE_ENV_DEVELOPMENT || "development"
+
+
+export const IS_IN_PRODUCTION = NODE_ENV !== NODE_ENV_DEVELOPMENT
+
 //api
 const PORT = process.env.PORT ?? 3000
 const app = express()
@@ -49,17 +55,15 @@ export const io = new Server(server, {
 
 
 // ----------- MIDLEWARE -----------
-if(NODE_ENV === 'development'){
+if(!IS_IN_PRODUCTION){
   app.use(cors({
     origin: '*'
   }))
+  app.use(logger('dev'))
 }
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-if (NODE_ENV === 'development') {
-  app.use(logger('dev'))
-}
 
 // ----------- ENDPOINTS -----------
 app.use("/test",router_test)
@@ -72,7 +76,7 @@ io.on('connection', socketRecieverManager)
 // ----------- SERVER -----------
 server.listen(PORT, () => {
   // Find the IPv4 addresses for internal network interfaces
-  if(NODE_ENV === 'development'){
+  if(!IS_IN_PRODUCTION){
     const interfaces = os.networkInterfaces();
     const addresses = Object.values(interfaces)
       .flat()
