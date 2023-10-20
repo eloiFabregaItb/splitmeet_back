@@ -1,10 +1,13 @@
 import express from "express";
 // import { io } from "../server";
 import jwt  from "jsonwebtoken";
-import { db } from "../db/db.js";
+import db from "../db/db.js";
 import crypto from "crypto"
 import { jwtSign, jwtVerify } from "../utils/jwt.js";
+import { db_getUserByJWT, db_getUserByMailPassword } from "../db/db_users.js";
 
+import passport from 'passport';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 const router = express.Router()
 export default router
@@ -20,39 +23,18 @@ router.get('/', (req, res) => {
 
 
 router.post("/protected",jwtVerify,async(req,res)=>{
-  const {usr_id} = req
-  res.json({success:true,msg:"authentificated",user:req.by})
+  const {user} = req
+  res.json({success:true,msg:"authentificated",user})
 })
 
 
 // LOGIN with JWT
 router.post('/loginjwt',jwtVerify, async (req, res) => {
-  try{
-    const {usr_id} = req
-
-    //query a la DB
-    const [rows,fields] = await db.query(
-      "SELECT * FROM Users WHERE usr_id = ?",
-      [req.usr_id]
-    )
-
-    //si no hay resultados
-    if (!rows || rows.length === 0) {
-      // No user found, send a response with success:false
-      return res.json({ success: false, msg:"User/Password combo doesn't match"});
-    }
-
-    //separar informacion sensible
-    const {usr_password,usr_id:usr_id2, ...publicUser} = rows[0]
-    // Create token
-    const token = jwtSign({usr_mail:publicUser.usr_mail, usr_id })
-    //retornar un success
-    return res.json({ success: true, ...publicUser,jwt:token});
-  }catch(err){
-    //en caso de error
-    console.log(err)
-    return res.json({ success: false, msg:"An error occurred" });
-  }
+  // Create token
+  req.user.signJWT()
+  
+  //retornar un success
+  return res.json({ success: true, ...req.user.publicData()});
       
 })
 
@@ -68,31 +50,19 @@ router.post('/login', async (req, res) => {
 
   try{
 
-    //query a la DB
-    const [rows,fields] = await db.query(
-      "SELECT * FROM Users WHERE usr_mail = ? AND usr_password = ?",
-      [usr_mail,usr_pass]
-    )
+    const user = await db_getUserByMailPassword(usr_mail,usr_pass)
 
     //si no hay resultados
-    if (!rows || rows.length === 0) {
+    if (!user) {
       // No user found, send a response with success:false
       return res.json({ success: false, msg:"User/Password combo doesn't match"});
     }
 
-
-
-    //separar informacion sensible
-    const {usr_password,usr_id, ...publicUser} = rows[0]
-
-
-        // Create token
-        const token = jwtSign({usr_mail, usr_id })
-    
+    // Create token
+    user.signJWT()
 
     //retornar un success
-    return res.json({ success: true, ...publicUser,jwt:token});
-    
+    return res.json({ success: true, ...user.publicData()});
 
   }catch(err){
 
@@ -147,6 +117,37 @@ router.post('/signup', async (req, res) => {
       
 })
 
+
+
+
+// Configure the Google OAuth strategy
+passport.use(new GoogleStrategy({
+  clientID: '384807507489-0u90koe30ia44ibbtqitqloipk193i8h.apps.googleusercontent.com',
+  clientSecret: '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',
+  callbackURL: 'http://localhost:3000/auth/google/callback', // Actualiza con tu URI de redirección
+}, (accessToken, refreshToken, profile, done) => {
+  // Save or retrieve user information as needed.
+  return done(null, profile);
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+// Route to initiate Google authentication
+router.get('/google', passport.authenticate('google', {
+  scope: ['https://www.googleapis.com/auth/plus.login'],
+}));
+
+// Redirect route after successful authentication
+router.get('/google/callback', passport.authenticate('google', {
+  successRedirect: '/user/profile', // Redirect to the profile page (adjust as needed)
+  failureRedirect: '/', // Redirect to the main page in case of failure
+}));
 
 
 

@@ -7,8 +7,8 @@ const db_pool = mysql.createPool({
     database: process.env.DB_DATABASE || "splitmeet"
 });
 
-export const db = db_pool.promise();
-
+const db = db_pool.promise();
+export default db
 /*++++++++ EXAMPLE USAGE +++++++++++
 
 
