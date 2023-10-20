@@ -1,6 +1,7 @@
 import { User } from "../models/User.js";
 import db from "./db.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto"
 
 const JWT_SECRET = process.env.JWT_SECRET || "secretJWT"
 
@@ -37,4 +38,61 @@ export async function db_getUserByJWT(token){
     console.error(err)
   }
 
+}
+
+
+
+
+
+//this function searches in the DB for a user with googleId and OAUTH
+//it returns an object <User> or undefined
+export async function db_getUserByGoogleId(googleId){
+  if (!googleId) return
+  
+  try {
+    const [rows,fields] = await db.query(
+      "SELECT * FROM Users WHERE usr_google_id = ? AND usr_oauth = 1",
+      [googleId]
+    )
+
+    if(rows && rows[0]){
+      return new User(rows[0])
+    }
+    
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+
+
+
+
+//this function is called by the google oauth method
+//it try to get a user from the DB with the google profile
+//if the user is not in the DB it will register 
+//this function returns an object <User>
+export async function db_getOrRegisterUserGoogleOauth(googleProfile){
+
+  const googleId = googleProfile.id
+  const displayName = googleProfile.displayName
+  const picture = googleProfile._json.picture
+
+  try {
+
+    const user = await db_getUserByGoogleId(googleId)
+    if(user) return user
+
+    const usr_id =  crypto.randomUUID()//usr_id
+
+    await db.query(
+      "INSERT INTO Users (usr_id,usr_mail,usr_name,usr_oauth,usr_img,usr_google_id,usr_mail_validated) VALUES (?,?,?,?,?,?,?);",
+      [usr_id, "", displayName, true, picture,googleId,true]
+    )
+
+    return User.fromGoogle(usr_id,googleId,displayName,picture)
+
+  } catch (err) {
+    console.error(err)
+  }
 }
