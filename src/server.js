@@ -13,7 +13,7 @@ import cors from "cors"
 
 // own modules
 import router_test from "./routes/template.js"
-import router_auth from "./routes/auth.js"
+import router_auth from "./routes/auth/router_auth.js"
 import userRoutes from './routes/user.js'; // Importa el archivo de rutas de usuario
 
 import socketRecieverManager from './sockets/socketReciverManager.js'
@@ -101,6 +101,7 @@ server.listen(PORT, () => {
     const localUrl = `http://localhost:${PORT}`;
     const networkUrl = `http://${addresses.length > 0 ? addresses[0] : 'localhost'}:${PORT}`;
   
+    console.clear()
     console.log(`API running at:`)
     console.log(`- Local:   ${localUrl}`)
     console.log(`- Network: ${networkUrl}`)
