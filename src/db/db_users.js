@@ -3,6 +3,7 @@ import db from "./db.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto"
 import { triggerAsyncId } from "async_hooks";
+import { downloadAndSaveUserImage } from "../routes/user/endpoints/profileImg.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secretJWT"
 
@@ -90,10 +91,20 @@ export async function db_getOrRegisterUserGoogleOauth(googleProfile){
 
     const usr_id =  crypto.randomUUID()//usr_id
 
-    await db.query(
-      "INSERT INTO Users (usr_id,usr_mail,usr_name,usr_oauth,usr_img,usr_google_id,usr_mail_validated) VALUES (?,?,?,?,?,?,?);",
-      [usr_id, "", displayName, true, picture,googleId,true]
-    )
+    const filename = await downloadAndSaveUserImage(picture)
+
+    if(filename){
+      await db.query(
+        "INSERT INTO Users (usr_id,usr_mail,usr_name,usr_oauth,usr_img,usr_google_id,usr_mail_validated) VALUES (?,?,?,?,?,?,?);",
+        [usr_id, "", displayName, true, filename,googleId,true]
+      )
+    }else{
+      await db.query(
+        "INSERT INTO Users (usr_id,usr_mail,usr_name,usr_oauth,usr_google_id,usr_mail_validated) VALUES (?,?,?,?,?,?);",
+        [usr_id, "", displayName, true,googleId,true]
+      )
+    }
+
 
     return User.fromGoogle(usr_id,googleId,displayName,picture)
 

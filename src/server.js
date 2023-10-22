@@ -73,33 +73,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 
-// //google oauth
-// app.use(session({
-//   secret: 'secret_session',
-//   resave: false,
-//   saveUninitialized: true,
-// }));
+//google oauth
+app.use(session({
+  secret: 'secret_session',
+  resave: false,
+  saveUninitialized: true,
+}));
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // ----------- ENDPOINTS -----------
-// const upload = multer();
-// app.use(upload.array())
-// // Endpoint for reading token value from FormData
-// app.post('/formdata-token', (req, res) => {
-//   const token = req.body.token;
-//   res.send(`Token from FormData: ${token}`);
-// });
-
-// // Endpoint for reading token value from JSON
-// app.post('/json-token', (req, res) => {
-//   const token = req.body.token;
-//   res.send(`Token from JSON: ${token}`);
-// });
-
-
 app.use("/test",router_test)
 app.use("/auth",router_auth)
 app.use('/user',router_user);
