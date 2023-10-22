@@ -6,6 +6,7 @@ import path from "path"
 
 import { db_getUserByID, db_getUserByMailPassword, db_updateUserFields } from "../../../db/db_users.js";
 import { jwtUserFromToken, jwtVerify } from "../../../utils/jwt.js";
+import axios from "axios";
 
 
 
@@ -21,7 +22,7 @@ export default router
 //ruta de ceracion
 const PROFILE_IMG_URL = "public/usrProfilePic/"
 
-//configuracion
+//file saving configuracion
 const storage = multer.diskStorage({
   destination: function (req, file, done) {
 
@@ -36,6 +37,8 @@ const storage = multer.diskStorage({
     //this 2 lines does the same as <jwtVerify>
     const user = await jwtUserFromToken(req.body.token)
     req.user = user
+
+    if(user.oauth) return done("Oauth users cant change profile img",null)
 
     //recuperamos la extension y generamos el archivo original manteniendo la extension  
     const extension = path.extname(file.originalname)
@@ -89,6 +92,8 @@ router.post('/profileImg',upload.single("img"),async (req, res) => {
 
 
 //GET /user/profileImg
+// gets the user image with the user id given by parammeter
+// or also works localhost:3000/usrProfilePic/9e2017ed-721e-474e-857d-7220e905fe17.png
 router.get('/profileImg',async (req, res) => {
   const usr_id = req.body.usr_id
 
@@ -101,11 +106,40 @@ router.get('/profileImg',async (req, res) => {
   if(!user) return res.status(400).json({success:false,msg:"No user found"})
 
   const absolutePath = path.resolve('public', 'usrProfilePic', user.img)
-  console.log(absolutePath)
   return res.sendFile(absolutePath)
   
-  //retornar un success
-  return res.json({ success: true});
-      
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export async function downloadAndSaveUserImage(url) {
+  try {
+    // Make an HTTP GET request to the URL
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+
+    const extension = response?.headers["content-type"]?.split("image/")[1] || "png"
+    const newFilename = `${crypto.randomUUID()}.${extension}`
+
+    // Specify the absolute path where the image will be saved
+    const absolutePath = path.resolve('public', 'usrProfilePic', newFilename);
+
+    // Write the image data to the specified path
+    await fs.writeFileSync(absolutePath, response.data, 'binary');
+
+    return newFilename
+  } catch (error) {
+    return undefined
+  }
+}
