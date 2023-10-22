@@ -36,6 +36,7 @@ router.post("/protected",jwtVerify,async(req,res)=>{
 
 
  */
+
 export async function jwtVerify (req, res, next){
   const token =
     req.body.token || req.query.token || req.headers["x-access-token"];
@@ -53,3 +54,11 @@ export async function jwtVerify (req, res, next){
   req.user = user
   return next();
 };
+
+
+export async function jwtUserFromToken(token){
+  if(!token) return undefined
+  const user = db_getUserByJWT(token)
+  if(!user) return undefined
+  return user
+}

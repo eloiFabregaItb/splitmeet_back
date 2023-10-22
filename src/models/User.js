@@ -11,7 +11,7 @@ export class User {
     usr_img,
     usr_date_creation,
     usr_google_id,
-    usr_mail_validated
+    usr_mail_validated = false
   }) {
     this.id = usr_id //private
     this.mail = usr_mail

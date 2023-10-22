@@ -7,9 +7,9 @@ const router = express.Router()
 export default router
 
 
-import loginRouter from "./login.js"
-import signupRouter from "./signup.js"
-import googleRouter from "./google.js"
+import loginRouter from "./endpoints/login.js"
+import signupRouter from "./endpoints/signup.js"
+import googleRouter from "./endpoints/google.js"
 
 router.use('',loginRouter)
 //        /auth/login
