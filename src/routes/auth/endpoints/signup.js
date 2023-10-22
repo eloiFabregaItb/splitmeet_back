@@ -1,10 +1,10 @@
 import express from "express"
 
-import db from "../../db/db.js"
+import db from "../../../db/db.js"
 import crypto from "crypto"
 
 
-import { jwtSign } from "../../utils/jwt.js"
+import { jwtSign } from "../../../utils/jwt.js"
 
 
 

@@ -1,8 +1,8 @@
 import express from "express";
 
 
-import { db_getUserByMailPassword } from "../../db/db_users.js";
-import { jwtVerify } from "../../utils/jwt.js";
+import { db_getUserByMailPassword } from "../../../db/db_users.js";
+import { jwtVerify } from "../../../utils/jwt.js";
 
 
 
