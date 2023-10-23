@@ -1,5 +1,7 @@
 import mysql from "mysql2"
 
+
+//DATABASE CONNECTION
 const db_pool = mysql.createPool({
     host: process.env.DB_URL || "localhost",
     user: process.env.DB_USER || "root",
@@ -9,6 +11,7 @@ const db_pool = mysql.createPool({
 
 const db = db_pool.promise();
 export default db
+
 /*++++++++ EXAMPLE USAGE +++++++++++
 
 

@@ -8,11 +8,14 @@ import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 import logger from 'morgan'
 import os from "os"
+import db from './db/db.js'
+import cors from "cors"
+import multer from "multer";
 
 // own modules
 import router_test from "./routes/template.js"
-import router_auth from "./routes/auth/router_auth.js"
-import userRoutes from './routes/user.js'; // Importa el archivo de rutas de usuario
+import router_auth from "./routes/auth/auth.js"
+import router_user from './routes/user/user.js'; // Importa el archivo de rutas de usuario
 
 import socketRecieverManager from './sockets/socketReciverManager.js'
 
@@ -46,6 +49,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'))
 }
 
+app.use(express.static('public'));
+
+
+//google oauth
 app.use(session({
   secret: 'secret_session',
   resave: false,
@@ -59,7 +66,7 @@ app.use(passport.session());
 // ----------- ENDPOINTS -----------
 app.use("/test",router_test)
 app.use("/auth",router_auth)
-app.use('/user', userRoutes);
+app.use('/user',router_user);
 
 // ----------- SOCKET.IO -----------
 io.on('connection', socketRecieverManager)

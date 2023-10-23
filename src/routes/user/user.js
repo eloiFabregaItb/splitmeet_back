@@ -1,6 +1,12 @@
 import express from 'express';
 
+
+import router_profileImg from "./endpoints/profileImg.js"
+
 const router = express.Router();
+export default router;
+
+router.use("",router_profileImg)
 
 router.get('/profile', (req, res) => {
   if (req.isAuthenticated()) {
@@ -11,4 +17,7 @@ router.get('/profile', (req, res) => {
   }
 });
 
-export default router;
+
+router.post("/profileImg",async (req,res)=>{
+  
+})

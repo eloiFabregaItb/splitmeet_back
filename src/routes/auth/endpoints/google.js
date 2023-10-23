@@ -2,7 +2,7 @@ import express from "express"
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
-import { db_getOrRegisterUserGoogleOauth, db_getUserByGoogleId } from "../../db/db_users.js";
+import { db_getOrRegisterUserGoogleOauth, db_getUserByGoogleId } from "../../../db/db_users.js";
 
  
 
