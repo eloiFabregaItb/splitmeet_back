@@ -5,6 +5,9 @@ CREATE TABLE Users (
     usr_password varchar(255),
     usr_oauth boolean,
     usr_img varchar(255),
+    usr_date_creation date,
+    usr_mail_validated boolean DEFAULT FALSE,
+    usr_google_id varchar(25)
     PRIMARY KEY (usr_id)
 );
 
