@@ -21,10 +21,7 @@
     "mysql2": "^3.6.2",
     "os": "^0.1.2",
     "passport": "^0.6.0",
-<<<<<<< HEAD
-=======
     "passport-google-oauth20": "^2.0.0",
->>>>>>> 2c8ea34d2831dc7db9dc446518305b6566d0e469
     "socket.io": "^4.7.2"
   },
   "type": "module"
