@@ -25,11 +25,29 @@ import passport from 'passport'
 
 // ----------- CONFIG -----------
 
+const NODE_ENV = process.env.NODE_ENV || "production"
+const NODE_ENV_PRODUCTION = process.env.NODE_ENV_PRODUCTION || "production"
+const NODE_ENV_DEVELOPMENT = process.env.NODE_ENV_DEVELOPMENT || "development"
+
+
+export const IS_IN_PRODUCTION = NODE_ENV !== NODE_ENV_DEVELOPMENT
 
 //api
 const PORT = process.env.PORT ?? 3000
 const app = express()
 const server = createServer(app)
+
+
+//DATABASE CONNECTION TESTING
+// const [rows] = await db.query("SELECT * FROM Users")
+// // const [rows] = await db.query("INSERT INTO Users (usr_id,usr_mail,usr_name,usr_password,usr_oauth,usr_img) VALUES (?,?,?,?,?,?);",
+// // ["6c1fbd83-9e4a-45f2-8d84-17f74289eloi","elgrefa@gmail.com","elioputo","miau",0,"default.img"])
+// console.log(rows)
+
+
+
+
+
 
 
 //socket.io
@@ -42,12 +60,15 @@ export const io = new Server(server, {
 
 
 // ----------- MIDLEWARE -----------
-
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-if (process.env.NODE_ENV === 'development') {
+if(!IS_IN_PRODUCTION){
+  app.use(cors({
+    origin: '*'
+  }))
   app.use(logger('dev'))
 }
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
@@ -75,7 +96,7 @@ io.on('connection', socketRecieverManager)
 // ----------- SERVER -----------
 server.listen(PORT, () => {
   // Find the IPv4 addresses for internal network interfaces
-  if(process.env.NODE_ENV === 'development'){
+  if(!IS_IN_PRODUCTION){
     const interfaces = os.networkInterfaces();
     const addresses = Object.values(interfaces)
       .flat()
