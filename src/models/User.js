@@ -50,7 +50,7 @@ export class User {
       mail:this.mail,
       name:this.name,
       oauth:this.oauth,
-      img:this.img,
+      img:this.img === "NULL" || !null ? "default.png" : this.img,
       mailValidated:this.mailValidated
     }
 

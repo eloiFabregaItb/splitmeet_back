@@ -15,7 +15,7 @@ router.post("/test", (req, res) => {
 })
 
 
-const GOOGLE_CALLBACK_URL = 'http://localhost:3000/auth/google/callback'
+const GOOGLE_CALLBACK_URL = "https://qjkvldfn-5173.uks1.devtunnels.ms/"//://172.30.4.18:5173/home" //'http://localhost:3000/auth/google/callback'
 // Configure the Google OAuth strategy
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
@@ -55,6 +55,6 @@ router.get('/', passport.authenticate('google', {
 
 // Redirect route after successful authentication
 router.get('/callback', passport.authenticate('google', {
-  successRedirect: '/user/profile', // Redirect to the profile page (adjust as needed)
-  failureRedirect: '/', // Redirect to the main page in case of failure
+  successRedirect: 'http://172.30.4.18:5173/home', // Redirect to the profile page (adjust as needed)
+  failureRedirect: 'http://172.30.4.18:5173/login', // Redirect to the main page in case of failure
 }));

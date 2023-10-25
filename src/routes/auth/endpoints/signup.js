@@ -5,6 +5,7 @@ import crypto from "crypto"
 
 
 import { jwtSign } from "../../../utils/jwt.js"
+import { hashPassword } from "../../../utils/crypto.js"
 
 
 
@@ -24,7 +25,7 @@ router.post('/signup', async (req, res) => {
   }
 
   const usr_id = crypto.randomUUID()
-  const encryptedPassword = usr_pass // TODO await crypto.hash(usr_pass, 10);
+  const encryptedPassword = hashPassword(usr_pass) // TODO await crypto.hash(usr_pass, 10);
 
   try {
     const [rows] = await db.query(

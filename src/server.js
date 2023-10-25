@@ -13,9 +13,10 @@ import cors from "cors"
 import multer from "multer";
 
 // own modules
-import router_test from "./routes/template.js"
 import router_auth from "./routes/auth/auth.js"
-import router_user from './routes/user/user.js'; // Importa el archivo de rutas de usuario
+import router_user from './routes/user/user.js'
+import router_events from "./routes/events/events.js"
+import router_test from "./routes/test/test.js"
 
 import socketRecieverManager from './sockets/socketReciverManager.js'
 
@@ -39,10 +40,13 @@ const server = createServer(app)
 
 
 //DATABASE CONNECTION TESTING
-// const [rows] = await db.query("SELECT * FROM Users")
-// // const [rows] = await db.query("INSERT INTO Users (usr_id,usr_mail,usr_name,usr_password,usr_oauth,usr_img) VALUES (?,?,?,?,?,?);",
-// // ["6c1fbd83-9e4a-45f2-8d84-17f74289eloi","elgrefa@gmail.com","elioputo","miau",0,"default.img"])
-// console.log(rows)
+// let [rows,fields] = await db.query("SELECT * FROM Events")
+// const [rows] = await db.query("INSERT INTO User_participation (evt_id,usr_id) VALUES (?,?);",
+// ['c86e47e7-0f88-424d-8ccb-2937c0535bc2','1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
+// rows && rows.length>0 && console.log(rows)
+// console.log(fields)
+
+
 
 
 
@@ -85,9 +89,13 @@ app.use(passport.session());
 
 
 // ----------- ENDPOINTS -----------
-app.use("/test",router_test)
 app.use("/auth",router_auth)
-app.use('/user',router_user);
+app.use('/user',router_user)
+app.use('/event',router_events)
+if(!IS_IN_PRODUCTION){
+  app.use("/test",router_test)
+}
+
 
 // ----------- SOCKET.IO -----------
 io.on('connection', socketRecieverManager)
@@ -106,7 +114,7 @@ server.listen(PORT, () => {
     const localUrl = `http://localhost:${PORT}`;
     const networkUrl = `http://${addresses.length > 0 ? addresses[0] : 'localhost'}:${PORT}`;
   
-    console.clear()
+    // console.clear()
     console.log(`API running at:`)
     console.log(`- Local:   ${localUrl}`)
     console.log(`- Network: ${networkUrl}`)

@@ -6,7 +6,8 @@ const db_pool = mysql.createPool({
     host: process.env.DB_URL || "localhost",
     user: process.env.DB_USER || "root",
     password: process.env.DB_PASS || "1234",
-    database: process.env.DB_DATABASE || "splitmeet"
+    database: process.env.DB_DATABASE || "splitmeet",
+    port: process.env.DB_PORT || 3306
 });
 
 const db = db_pool.promise();

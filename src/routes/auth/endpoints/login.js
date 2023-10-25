@@ -3,11 +3,18 @@ import express from "express";
 
 import { db_getUserByMailPassword } from "../../../db/db_users.js";
 import { jwtVerify } from "../../../utils/jwt.js";
+import { hashPassword } from "../../../utils/crypto.js";
 
 
 
 const router = express.Router()
 export default router
+
+
+
+
+
+
 
 
 
@@ -36,9 +43,14 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({success:false,msg:'Usuario o contraseña no presente'})
   }
 
+  // console.log("PASSWORD",usr_pass) //5c6f51c9b50b7550deeda3abc25889237972c11c28560a9ab6dd99f9dc817cb7 user3@example.com
+  const pswdHash = hashPassword(usr_pass)
+
   try{
 
-    const user = await db_getUserByMailPassword(usr_mail,usr_pass)
+    const user = await db_getUserByMailPassword(usr_mail,pswdHash)
+
+    console.log(user)
 
     //si no hay resultados
     if (!user) {
