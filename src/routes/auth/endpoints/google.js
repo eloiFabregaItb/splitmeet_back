@@ -4,9 +4,6 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 import { db_getOrRegisterUserGoogleOauth, db_getUserByGoogleId } from "../../../db/db_users.js";
 
- 
-
-
 const router = express.Router()
 export default router
 
@@ -14,9 +11,9 @@ router.post("/test", (req, res) => {
   res.send("HOLA :)")
 })
 
-
 const GOOGLE_CALLBACK_URL = 'http://localhost:3000/auth/google/callback'
 // Configure the Google OAuth strategy
+
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -30,9 +27,6 @@ passport.use(new GoogleStrategy({
 
   return done(null, user);
 }));
-
-
-
 
 
 passport.serializeUser((user, done) => {

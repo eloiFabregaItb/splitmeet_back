@@ -45,11 +45,6 @@ const server = createServer(app)
 // console.log(rows)
 
 
-
-
-
-
-
 //socket.io
 export const io = new Server(server, {
   connectionStateRecovery: {},
@@ -106,7 +101,6 @@ server.listen(PORT, () => {
     const localUrl = `http://localhost:${PORT}`;
     const networkUrl = `http://${addresses.length > 0 ? addresses[0] : 'localhost'}:${PORT}`;
   
-    console.clear()
     console.log(`API running at:`)
     console.log(`- Local:   ${localUrl}`)
     console.log(`- Network: ${networkUrl}`)
