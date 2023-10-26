@@ -32,38 +32,40 @@ const NODE_ENV_DEVELOPMENT = process.env.NODE_ENV_DEVELOPMENT || "development"
 
 export const IS_IN_PRODUCTION = NODE_ENV !== NODE_ENV_DEVELOPMENT
 
+
+
+
+
+
 //api
 const PORT = process.env.PORT ?? 3000
 const app = express()
 const server = createServer(app)
 
-getNowTimestamp()
 
 
 
 
-
-
-//socket.io
+// ----------- SOCKET.IO -----------
 export const io = new Server(server, {
   connectionStateRecovery: {},
   cors: {
     origin: "*"//"https://apps.fabrega.cat/fileUpload/"//'http://localhost:5173',
   }
 })
+io.on('connection', socketRecieverManager)
+
+
 
 
 // ----------- MIDLEWARE -----------
 if(!IS_IN_PRODUCTION){
-  app.use(cors({
-    origin: '*'
-  }))
+  app.use(cors({origin: '*'}))
   app.use(logger('dev'))
 }
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static('public'));
 
 
@@ -78,6 +80,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+
+
+
+
 // ----------- ENDPOINTS -----------
 app.use("/auth",router_auth)
 app.use('/user',router_user)
@@ -87,8 +93,13 @@ if(!IS_IN_PRODUCTION){
 }
 
 
-// ----------- SOCKET.IO -----------
-io.on('connection', socketRecieverManager)
+
+
+
+
+
+
+
 
 
 // ----------- SERVER -----------

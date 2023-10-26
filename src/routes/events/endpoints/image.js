@@ -38,6 +38,8 @@ const storage = multer.diskStorage({
     const user = await jwtUserFromToken(req.body.token)
     req.user = user
 
+    if(user.oauth) return done("Oauth users cant change profile img",null)
+
     //recuperamos la extension y generamos el archivo original manteniendo la extension  
     const extension = path.extname(file.originalname)
     const uniqueFilename = `${crypto.randomUUID()}${extension}`

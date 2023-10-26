@@ -37,8 +37,10 @@ router.use('',route_create)
 router.use('',route_getUsers)
 //      /event/getUsers
 
+
 router.use('',route_join)
 //      /event/join
+
 
 router.use('',route_leave)
 //      /event/leave
