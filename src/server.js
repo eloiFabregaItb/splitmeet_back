@@ -3,14 +3,11 @@
 import {} from 'dotenv/config'
 
 import express from 'express'
-import bodyParser from 'body-parser'
 import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 import logger from 'morgan'
 import os from "os"
-import db from './db/db.js'
 import cors from "cors"
-import multer from "multer";
 
 // own modules
 import router_auth from "./routes/auth/auth.js"
@@ -19,10 +16,12 @@ import router_events from "./routes/events/events.js"
 import router_test from "./routes/test/test.js"
 
 import socketRecieverManager from './sockets/socketReciverManager.js'
-
 //oauth modules
 import session from 'express-session';
 import passport from 'passport'
+import { getNowTimestamp } from './utils/time.js'
+
+import "./testing.js"
 
 // ----------- CONFIG -----------
 
@@ -33,47 +32,40 @@ const NODE_ENV_DEVELOPMENT = process.env.NODE_ENV_DEVELOPMENT || "development"
 
 export const IS_IN_PRODUCTION = NODE_ENV !== NODE_ENV_DEVELOPMENT
 
+
+
+
+
+
 //api
 const PORT = process.env.PORT ?? 3000
 const app = express()
 const server = createServer(app)
 
 
-//DATABASE CONNECTION TESTING
-// let [rows,fields] = await db.query("SELECT * FROM Events")
-// const [rows] = await db.query("INSERT INTO User_participation (evt_id,usr_id) VALUES (?,?);",
-// ['c86e47e7-0f88-424d-8ccb-2937c0535bc2','1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
-// rows && rows.length>0 && console.log(rows)
-// console.log(fields)
 
 
 
-
-
-
-
-
-
-//socket.io
+// ----------- SOCKET.IO -----------
 export const io = new Server(server, {
   connectionStateRecovery: {},
   cors: {
     origin: "*"//"https://apps.fabrega.cat/fileUpload/"//'http://localhost:5173',
   }
 })
+io.on('connection', socketRecieverManager)
+
+
 
 
 // ----------- MIDLEWARE -----------
 if(!IS_IN_PRODUCTION){
-  app.use(cors({
-    origin: '*'
-  }))
+  app.use(cors({origin: '*'}))
   app.use(logger('dev'))
 }
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static('public'));
 
 
@@ -88,6 +80,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+
+
+
+
 // ----------- ENDPOINTS -----------
 app.use("/auth",router_auth)
 app.use('/user',router_user)
@@ -97,8 +93,13 @@ if(!IS_IN_PRODUCTION){
 }
 
 
-// ----------- SOCKET.IO -----------
-io.on('connection', socketRecieverManager)
+
+
+
+
+
+
+
 
 
 // ----------- SERVER -----------

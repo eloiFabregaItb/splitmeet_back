@@ -1,12 +1,12 @@
 import express from "express";
 
 
-import { db_getUserByMailPassword } from "../../../db/db_users.js";
 import { jwtVerify } from "../../../utils/jwt.js";
-import { generateAlphaNumericNonRepeated, hashPassword } from "../../../utils/crypto.js";
+import { generateAlphaNumericNonRepeated } from "../../../utils/crypto.js";
 
 import crypto from "crypto"
 import db from "../../../db/db.js";
+import { getNowTimestamp } from "../../../utils/time.js";
 
 const router = express.Router()
 export default router
@@ -23,9 +23,16 @@ router.post('/create',jwtVerify, async (req, res) => {
     
     const newUrl = await generateNewEventUrl()
     const evt_id = crypto.randomUUID()
-
-    await db.query("INSERT INTO Events (evt_id,usr_id_creator,evt_name,evt_url) VALUES (?,?,?,?);",
-    [evt_id,req.user.id,evt_name,newUrl])
+    const now = getNowTimestamp()
+    await db.query(`INSERT INTO Events (
+        evt_id,
+        usr_id_creator,
+        evt_name,
+        evt_url,
+        evt_creation_timestamp,
+        evt_modification_timestamp
+      ) VALUES (?,?,?,?,?,?);`,
+    [evt_id,req.user.id,evt_name,newUrl,now,now])
     
     
     //retornar un success

@@ -36,6 +36,8 @@ CREATE TABLE Events (
     evt_name VARCHAR(255) not null,
     evt_url VARCHAR(255) not null,
     evt_image_url VARCHAR(255),
+    evt_creation_timestamp INT NOT NULL,
+    evt_modification_timestamp INT NOT NULL,
     PRIMARY KEY(evt_id),
     FOREIGN KEY (usr_id_creator) REFERENCES Users(usr_id)
 );
