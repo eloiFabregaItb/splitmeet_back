@@ -9,7 +9,7 @@ const router = express.Router()
 export default router
 
 
-router.post('/getjwtbyid', async (req, res) => {
+router.all('/getjwtbyid', async (req, res) => {
     const {usr_id} = req.body
     console.log(usr_id)
     const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?",[usr_id])
