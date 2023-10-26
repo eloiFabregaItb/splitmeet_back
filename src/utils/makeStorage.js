@@ -4,19 +4,18 @@ import fs from "fs"
 import crypto from "crypto"
 import path from "path"
 
-import { jwtUserFromToken } from "../../../utils/jwt.js";
+import { jwtUserFromToken } from "../utils/jwt.js";
 
 
 
 export function makeStorageSingleFile(url,
-  generateFilename=(extension,originalName)=>{
+  generateFilename=(extension,originalName,user)=>{
     return `${crypto.randomUUID()}${extension}`
-  },
-  
+  }
 ){
 
   //file saving configuracion
-  const storage = multer.diskStorage({
+  return multer.diskStorage({
     destination: function (req, file, done) {
   
       //si no existe la carpeta, entonces crearla
@@ -30,33 +29,34 @@ export function makeStorageSingleFile(url,
       //this 2 lines does the same as <jwtVerify>
       const user = await jwtUserFromToken(req.body.token)
       req.user = user
-  
+
+
       if(!user) return done("No logged users cant upload images",null)
   
-      //recuperamos la extension y generamos el archivo original manteniendo la extension  
+      //recuperamos la extension y generamos el nuevo nombre manteniendo la extension  
       const extension = path.extname(file.originalname)  
+
+      try{
+        let filename = await generateFilename({extension,originalname:file.originalname,file,user,req})
+        //enviar los datos a la siguiente call
+        req.originalFileName = file.originalname
+        req.uniqueFilename = filename
+        req.fileExtension = extension
+        done(null, filename)
+
+      }catch(err){
+        return done(err.message,null)
+      }
   
-      let filename = generateFilename(extension,file.originalname)
 
 
-      // if(user.img){
-      //   //si ya tiene una imagen
-      //   const oldExtension = path.extname(user.img)
-      //   if(oldExtension === extension){
-      //     filename = user.img
-      //   }else{
-      //     //si el usuario tiene una imagen entonces la reemplazamos
-      //     fs.unlinkSync(path.join(url,user.img))
-      //   }
-      // }
+
+      
+
+
+
   
-      //enviar los datos a la siguiente call
-      req.originalFileName = file.originalname
-      req.uniqueFilename = filename
-      req.fileExtension = extension
-      done(null, filename)
     },
   })
 
-  return storage
 }

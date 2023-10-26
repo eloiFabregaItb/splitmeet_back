@@ -19,7 +19,7 @@ import socketRecieverManager from './sockets/socketReciverManager.js'
 //oauth modules
 import session from 'express-session';
 import passport from 'passport'
-import { getNowTimestamp } from './utils/time.js'
+import multer from 'multer'
 
 import "./testing.js"
 
@@ -83,7 +83,6 @@ app.use(passport.session());
 
 
 
-
 // ----------- ENDPOINTS -----------
 app.use("/auth",router_auth)
 app.use('/user',router_user)
@@ -91,6 +90,7 @@ app.use('/event',router_events)
 if(!IS_IN_PRODUCTION){
   app.use("/test",router_test)
 }
+
 
 
 

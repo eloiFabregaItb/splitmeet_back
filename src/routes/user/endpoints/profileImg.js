@@ -7,6 +7,7 @@ import path from "path"
 import { db_getUserByID, db_getUserByMailPassword, db_updateUserFields } from "../../../db/db_users.js";
 import { jwtUserFromToken, jwtVerify } from "../../../utils/jwt.js";
 import axios from "axios";
+import { makeStorageSingleFile } from "../../../utils/makeStorage.js";
 
 
 
@@ -21,48 +22,22 @@ export default router
 
 //ruta de ceracion
 const PROFILE_IMG_URL = "public/usrProfilePic/"
-
-//file saving configuracion
-const storage = multer.diskStorage({
-  destination: function (req, file, done) {
-
-    //si no existe la carpeta, entonces crearla
-    if (!fs.existsSync(PROFILE_IMG_URL)) {
-      fs.mkdirSync(PROFILE_IMG_URL, { recursive: true });
+const storage = makeStorageSingleFile(PROFILE_IMG_URL,({user,extension})=>{
+  if(user.img){
+    //si ya tiene una imagen
+    const oldExtension = path.extname(user.img)
+    if(oldExtension === extension){
+      return user.img
+    }else{
+      //si el usuario tiene una imagen entonces la reemplazamos
+      fs.unlinkSync(path.join(PROFILE_IMG_URL,user.img))
     }
+  }
 
-    done(null, PROFILE_IMG_URL);
-  },
-  filename:async function (req, file, done) {
-    //this 2 lines does the same as <jwtVerify>
-    const user = await jwtUserFromToken(req.body.token)
-    req.user = user
-
-    //recuperamos la extension y generamos el archivo original manteniendo la extension  
-    const extension = path.extname(file.originalname)
-    const uniqueFilename = `${crypto.randomUUID()}${extension}`
+  return `${crypto.randomUUID()}${extension}`
+})
 
 
-    let filename = uniqueFilename
-    if(user.img){
-      //si ya tiene una imagen
-      const oldExtension = path.extname(user.img)
-      if(oldExtension === extension){
-        filename = user.img
-      }else{
-        //si el usuario tiene una imagen entonces la reemplazamos
-        fs.unlinkSync(path.join(PROFILE_IMG_URL,user.img))
-      }
-    }
-
-    //enviar los datos a la siguiente call
-    req.originalFileName = file.originalname
-    req.uniqueFilename = filename
-    req.fileExtension = extension
-    done(null, filename)
-  },
-});
-  
 // Initialize Multer with the storage configuration
 const upload = multer({ storage });
 
