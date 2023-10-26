@@ -1,12 +1,20 @@
 import express from 'express';
 
 
-import router_profileImg from "./endpoints/profileImg.js"
+import route_profileImg from "./endpoints/profileImg.js"
+import route_events from "./endpoints/evetns.js"
 
 const router = express.Router();
 export default router;
 
-router.use("",router_profileImg)
+router.use("",route_profileImg)
+//  /user/profileImg
+
+
+router.use("",route_events)
+//  /user/events
+
+
 
 router.get('/profile', (req, res) => {
   if (req.isAuthenticated()) {
