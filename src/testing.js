@@ -12,9 +12,9 @@ import { User } from './models/User.js'
 // let [rows,fields] = await db.query("SELECT * FROM User_participation")
 
 //DB SELECT EVENTS
-let [rows,fields] = await db.query("SELECT * FROM Events")
+// let [rows,fields] = await db.query("SELECT * FROM Events")
 // console.log(rows.map(x=>new Event(x)))
-console.log(rows)
+// console.log(rows)
 
 
 //DB UPDATE
@@ -40,7 +40,7 @@ console.log(rows)
 
 
 //JWT OF USER
-// const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?",['5e6b5fc1-0f8e-4b47-b739-84448deb60b9'])
+// const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?",['1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
 // const user = new User(rows[0])
 // user.signJWT()
 // console.log(user.name,user.jwt)

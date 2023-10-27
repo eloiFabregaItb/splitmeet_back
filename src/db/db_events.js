@@ -26,3 +26,37 @@ export async function db_updateEventFields(event, fields) {
     console.log(err)
   }
 }
+
+export async function db_getEventByUrl(url){
+  if(!url) return
+
+  try{
+    const [rows] = await db.query(
+      "SELECT * FROM Events WHERE evt_url = ?",
+      [url]
+    )
+
+    if(rows && rows[0]){
+      return( new Event(rows[0]))
+    }
+  }catch(err){
+    console.error(err)
+  }
+}
+
+export async function db_getEventByID(id){
+  if(!id) return
+
+  try{
+    const [rows] = await db.query(
+      "SELECT * FROM Events WHERE evt_id = ?",
+      [id]
+    )
+
+    if(rows && rows[0]){
+      return( new Event(rows[0]))
+    }
+  }catch(err){
+    console.error(err)
+  }
+}

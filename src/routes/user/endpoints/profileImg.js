@@ -67,21 +67,21 @@ router.post('/profileImg',upload.single("img"),async (req, res) => {
 //GET /user/profileImg
 // gets the user image with the user id given by parammeter
 // or also works localhost:3000/usrProfilePic/9e2017ed-721e-474e-857d-7220e905fe17.png
-router.get('/profileImg',async (req, res) => {
-  const usr_id = req.body.usr_id
+// router.get('/profileImg',async (req, res) => {
+//   const usr_id = req.body.usr_id
 
-  if (!usr_id) {
-    return res.status(400).json({ success:false,msg: 'Data required'});
-  }
+//   if (!usr_id) {
+//     return res.status(400).json({ success:false,msg: 'Data required'});
+//   }
 
-  const user = await db_getUserByID(usr_id)
+//   const user = await db_getUserByID(usr_id)
 
-  if(!user) return res.status(400).json({success:false,msg:"No user found"})
+//   if(!user) return res.status(400).json({success:false,msg:"No user found"})
 
-  const absolutePath = path.resolve('public', 'usrProfilePic', user.img)
-  return res.sendFile(absolutePath)
+//   const absolutePath = path.resolve('public', 'usrProfilePic', user.img)
+//   return res.sendFile(absolutePath)
   
-})
+// })
 
 
 
