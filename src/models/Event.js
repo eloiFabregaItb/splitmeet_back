@@ -9,7 +9,7 @@ export class Event {
     usr_id_creator,
     evt_name,
     evt_url,
-    evt_img_url,
+    evt_image_url,
     evt_creation_timestamp,
     evt_modification_timestamp
   }) {
@@ -17,7 +17,7 @@ export class Event {
     this.cretorId = usr_id_creator
     this.name = evt_name
     this.url = evt_url
-    this.imgUrl = evt_img_url
+    this.imgUrl = evt_image_url
     this.creation = evt_creation_timestamp
     this.modification = evt_modification_timestamp
   }

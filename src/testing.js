@@ -9,10 +9,12 @@ import { User } from './models/User.js'
 
 
 //DB SELECT
-// let [rows,fields] = await db.query("SELECT * FROM Users")
 // let [rows,fields] = await db.query("SELECT * FROM User_participation")
-// console.log(rows)
 
+//DB SELECT EVENTS
+let [rows,fields] = await db.query("SELECT * FROM Events")
+// console.log(rows.map(x=>new Event(x)))
+console.log(rows)
 
 
 //DB UPDATE

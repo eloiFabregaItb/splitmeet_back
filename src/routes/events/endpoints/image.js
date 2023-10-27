@@ -4,11 +4,10 @@ import fs from "fs"
 import crypto from "crypto"
 import path from "path"
 
-import { db_getUserByID, db_getUserByMailPassword, db_updateUserFields } from "../../../db/db_users.js";
-import { jwtUserFromToken, jwtVerify } from "../../../utils/jwt.js";
 import axios from "axios";
 import { makeStorageSingleFile } from "../../../utils/makeStorage.js";
-
+import { makeEventFromBody } from "../events.js";
+import {db_updateEventFields} from "../../../db/db_events.js"
 
 
 
@@ -17,27 +16,33 @@ export default router
 
 
 
+
 //----------------MULTER-CONFIG-----------------------
 // configuracion de la creación del archivo para imagenes de perfil
 
 //ruta de ceracion
-const PROFILE_IMG_URL = "public/usrProfilePic/"
-const storage = makeStorageSingleFile(PROFILE_IMG_URL,({user,extension})=>{
-  if(user.img){
+const EVENT_IMG_URL = "public/evtPic/"
+const storage = makeStorageSingleFile(EVENT_IMG_URL,async ({req,extension,user})=>{
+
+  const ev = await makeEventFromBody(req.body)
+  if(!ev) throw new Error("No event identification")
+
+  req.event = ev
+  if(ev.imgUrl){
     //si ya tiene una imagen
-    const oldExtension = path.extname(user.img)
+    const oldExtension = path.extname(ev.imgUrl)
     if(oldExtension === extension){
       return user.img
     }else{
       //si el usuario tiene una imagen entonces la reemplazamos
-      fs.unlinkSync(path.join(PROFILE_IMG_URL,user.img))
+      fs.unlinkSync(path.join(EVENT_IMG_URL,ev.imgUrl))
     }
   }
+  
 
   return `${crypto.randomUUID()}${extension}`
 })
-
-
+  
 // Initialize Multer with the storage configuration
 const upload = multer({ storage });
 
@@ -45,18 +50,18 @@ const upload = multer({ storage });
 
 
 
-//POST /user/profileImg
-router.post('/profileImg',upload.single("img"),async (req, res) => {
+//POST /events/img
+router.post('/img',upload.single("img"),async (req, res) => {
 
   if (!req.file) {
     return res.status(400).json({ success:false,msg: 'No file uploaded'});
   }
 
-  const user = req.user
-  user.img = req.uniqueFilename
+  const event = req.event
+  event.imgUrl = req.uniqueFilename
 
   //actualizar los datos de usuario en la DB
-  db_updateUserFields(user,["usr_img"])
+  await db_updateEventFields(event,["evt_image_url"])
   
   //retornar un success
   return res.json({ success: true});
@@ -67,21 +72,21 @@ router.post('/profileImg',upload.single("img"),async (req, res) => {
 //GET /user/profileImg
 // gets the user image with the user id given by parammeter
 // or also works localhost:3000/usrProfilePic/9e2017ed-721e-474e-857d-7220e905fe17.png
-router.get('/profileImg',async (req, res) => {
-  const usr_id = req.body.usr_id
+// router.get('/profileImg',async (req, res) => {
+//   const usr_id = req.body.usr_id
 
-  if (!usr_id) {
-    return res.status(400).json({ success:false,msg: 'Data required'});
-  }
+//   if (!usr_id) {
+//     return res.status(400).json({ success:false,msg: 'Data required'});
+//   }
 
-  const user = await db_getUserByID(usr_id)
+//   const user = await db_getUserByID(usr_id)
 
-  if(!user) return res.status(400).json({success:false,msg:"No user found"})
+//   if(!user) return res.status(400).json({success:false,msg:"No user found"})
 
-  const absolutePath = path.resolve('public', 'usrProfilePic', user.img)
-  return res.sendFile(absolutePath)
+//   const absolutePath = path.resolve('public', 'usrProfilePic', user.img)
+//   return res.sendFile(absolutePath)
   
-})
+// })
 
 
 

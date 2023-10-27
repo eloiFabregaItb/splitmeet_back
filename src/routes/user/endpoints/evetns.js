@@ -1,12 +1,9 @@
 import express from "express";
 
 
-import { db_getUserByMailPassword } from "../../../db/db_users.js";
 import { jwtVerify } from "../../../utils/jwt.js";
-import { generateAlphaNumericNonRepeated, hashPassword } from "../../../utils/crypto.js";
-
-import crypto from "crypto"
 import db from "../../../db/db.js";
+import {Event} from "../../../models/Event.js"
 
 const router = express.Router()
 export default router
@@ -23,11 +20,14 @@ router.post('/events',jwtVerify, async (req, res) => {
 
   const eventsParticipating = participatingEvents.map(x=>new Event(x))
   const eventsCreated = createdEvents.map(x=>new Event(x))
-  
-  console.log(eventsParticipating,eventsCreated)
+  const events = [...eventsCreated,...eventsParticipating].sort((a,b)=>{
+    a.modification>b.modification?1:-1
+  })
+
+  console.log(req.user)
   
   //retornar un success
-  return res.json({ success: true});
+  return res.json({ success: true,events:events.map(e=>e )});
         
 })
 
