@@ -2,7 +2,7 @@ import express from 'express';
 
 
 import route_profileImg from "./endpoints/profileImg.js"
-import route_events from "./endpoints/evetns.js"
+import route_events from "./endpoints/events.js"
 
 const router = express.Router();
 export default router;

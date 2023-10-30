@@ -8,7 +8,8 @@ import route_getUsers from "./endpoints/getUsers.js"
 import route_join from "./endpoints/join.js"
 import route_leave from "./endpoints/join.js"
 import route_image from "./endpoints/image.js"
-import { db_getEventByID, db_getEventByUrl } from "../../db/db_events.js";
+// import { db_getEventByID, db_getEventByUrl } from "../../db/db_events.js";
+
 
 
 router.use(async (req,res,next)=>{
@@ -45,7 +46,9 @@ router.use('',route_image)
 
 export async function makeEventFromBody(body){
   if(body.evt_url){
-    const ev = await db_getEventByUrl(body.evt_url)
+    const [rows] = await db.query("SELECT * FROM Events WHERE evt_url = ?",[body.evt_url])
+    const ev = new Event(rows[0])
+    console.log(ev);
     return ev
   }else if(body.evt_id){
     const ev = await db_getEventByID(body.evt_id)

@@ -10,6 +10,7 @@ export default router
 
 
 router.post('/getUsers',jwtVerify, async (req, res) => {
+  console.log(req.event)
 
   if(!req.event){
     return res.status(400).json({success:false,msg:'No event found'})

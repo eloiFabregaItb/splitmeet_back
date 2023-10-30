@@ -17,7 +17,7 @@ export async function db_updateEventFields(event, fields) {
     ${fields.map(x => allFields[x] ? x + " = ? " : "").join(",")}
     WHERE evt_id = ?`
 
-  const values = fields.flatMap(x => allFields[x] ? allFields[x] : [])
+  const values = fields.flatMap(x => allFields[x] ? allFieldsW[x] : [])
   values.push(event.id)
 
   try {
@@ -27,6 +27,7 @@ export async function db_updateEventFields(event, fields) {
   }
 }
 
+<<<<<<< Updated upstream
 export async function db_getEventByUrl(url){
   if(!url) return
 
@@ -60,3 +61,5 @@ export async function db_getEventByID(id){
     console.error(err)
   }
 }
+=======
+>>>>>>> Stashed changes
