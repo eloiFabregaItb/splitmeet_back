@@ -64,7 +64,7 @@ router.post('/img',upload.single("img"),async (req, res) => {
   await db_updateEventFields(event,["evt_image_url"])
   
   //retornar un success
-  return res.json({ success: true});
+  return res.json({ success: true, filename:req.uniqueFilename });
       
 })
 
