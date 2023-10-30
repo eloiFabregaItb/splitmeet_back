@@ -38,21 +38,26 @@ router.post("/protected",jwtVerify,async(req,res)=>{
  */
 
 export async function jwtVerify (req, res, next){
-  const token =
-    req.body.token || req.query.token || req.headers["x-access-token"];
 
-  if (!token) {
-    return res.status(403).json({success:false,msg:"A token is required for authentication"});
-  }
+  try{
+    const token =
+      req.body.token || req.query.token || req.headers["x-access-token"];
   
-  const user = await db_getUserByJWT(token)
-
-  if(!user){
+    if (!token) {
+      return res.status(403).json({success:false,msg:"A token is required for authentication"});
+    }
+    
+    const user = await db_getUserByJWT(token)
+  
+    if(!user){
+      return res.status(401).json({success:false,msg:"Invalid Token"});
+    }
+  
+    req.user = user
+    return next();
+  }catch{
     return res.status(401).json({success:false,msg:"Invalid Token"});
   }
-
-  req.user = user
-  return next();
 };
 
 

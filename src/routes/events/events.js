@@ -16,7 +16,10 @@ import route_image from "./endpoints/image.js"
 
 router.use(async (req,res,next)=>{
   const ev = await makeEventFromBody(req.body)
-  if(ev) req.body.event = ev
+  if(ev) {
+    // req.body.event = ev
+    req.event = ev
+  }
   next()
 })
 

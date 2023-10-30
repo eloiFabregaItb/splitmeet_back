@@ -16,10 +16,10 @@ router.post('/getUsers',jwtVerify, async (req, res) => {
   }
 
   const ev = req.event
+  console.log("getUSERS",ev.getUsers)
   const users = await ev.getUsers()
 
   if(!users) return res.status(400).json({success:false,msg:'No users found'})
-  console.log(users)
 
   if(!users.some(x=>x.id === req.user.id)) return res.status(401).json({success:false,msg:'Unauthorized'})
 
