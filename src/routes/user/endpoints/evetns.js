@@ -25,9 +25,13 @@ router.post('/events',jwtVerify, async (req, res) => {
   })
 
   console.log(req.user)
+
+  for (const ev of events) {
+    await ev.getUsers()
+  }
   
   //retornar un success
-  return res.json({ success: true,events:events.map(e=>e )});
+  return res.json({ success: true,events:events.map(e=>e.publicData() )});
         
 })
 
