@@ -57,6 +57,7 @@ CREATE TABLE Schedule_ranges (
 CREATE TABLE User_participation (
     evt_id char(36) not null,
     usr_id char(36) not null,
+    active BOOLEAN not null DEFAULT true,
     PRIMARY KEY (evt_id, usr_id),
     FOREIGN KEY (evt_id) REFERENCES Events(evt_id) ON UPDATE CASCADE,
     FOREIGN KEY (usr_id) REFERENCES Users(usr_id) ON UPDATE CASCADE
