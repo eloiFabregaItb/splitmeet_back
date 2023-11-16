@@ -32,6 +32,7 @@ import { User } from './models/User.js'
 // await db.query(`DELETE FROM User_participation WHERE usr_id = ?`,['1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
 
 
+// await db.query(`UPDATE FROM User_participation SET active = false WHERE evt_id = ?, usr_id = ? `,['c86e47e7-0f88-424d-8ccb-2937c0535bc2','1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
 
 
 

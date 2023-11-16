@@ -37,7 +37,7 @@ async function getUserParticipatingEvents(usr_id){
   const [rows] = await db.query(`SELECT Events.*
   FROM Events
   JOIN User_participation ON Events.evt_id = User_participation.evt_id
-  WHERE User_participation.usr_id = ?`,[usr_id])
+  WHERE User_participation.usr_id = ? AND User_participation.active = true`,[usr_id])
 
   return rows
 }
