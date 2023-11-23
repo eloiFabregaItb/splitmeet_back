@@ -20,6 +20,7 @@ router.post("/loginjwt", jwtVerify, async (req, res) => {
 router.post("/login", async (req, res) => {
   //comprueba que se han recibido todos los datos requeridos
   const { usr_mail, usr_pass } = req.body;
+
   if (!usr_mail || !usr_pass) {
     return res
       .status(400)
@@ -30,6 +31,7 @@ router.post("/login", async (req, res) => {
 
   // console.log("PASSWORD",usr_pass) //5c6f51c9b50b7550deeda3abc25889237972c11c28560a9ab6dd99f9dc817cb7 user3@example.com
   const pswdHash = hashPassword(usr_pass);
+  console.log(usr_mail, pswdHash);
 
   try {
     const user = await db_getUserByMailPassword(usr_mail, pswdHash);

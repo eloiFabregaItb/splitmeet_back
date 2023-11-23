@@ -50,6 +50,8 @@ export class Event {
 
     this.users = users
     this.creator = users.find(x=>x.isCreator)
+    console.log(this.users);
+
     return users
 
   }
