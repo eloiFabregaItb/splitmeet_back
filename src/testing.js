@@ -1,7 +1,11 @@
 import db from './db/db.js'
 import { User } from './models/User.js'
-// import multer from "multer";
 
+// import multer from "multer";
+import nodemailer from 'nodemailer';
+import ejs from 'ejs';
+import fs from 'fs';
+import { sendEmail } from './mail/mail.js';
 
 
 
@@ -88,3 +92,20 @@ import { User } from './models/User.js'
 
 // const mailData = await service_sendMail({to:"orillad2003@gmail.com",subject:"Your request is being processed",html:`please be patient we will answer as soon as we can.<br>`})
 // console.log(mailData);
+
+
+// const transporter = nodemailer.createTransport({
+//     host: 'smtp.gmail.com',
+//     port: 465,
+//     secure: true,
+//     auth: {
+//       user: process.env.SMTP_MAIL, 
+//       pass: process.env.SMTP_KEY  
+//     }
+//   });
+  
+
+
+// const templatePath = path.join(__dirname, 'splitmeet_back/src/mail/welcome-email.ejs');
+
+
