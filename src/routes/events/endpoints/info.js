@@ -47,15 +47,20 @@ router.post("/info", jwtVerify, async (req, res) => {
   //UNFLAT EXPENSES
   const expenses_group = Object.groupBy(expenses_db, (e) => e.exp_id);
 
+  console.log(expenses_db[0]);
+
+  const event = {
+    evt_id: expenses_db[0]?.evt_id,
+    usr_id_creator: expenses_db[0]?.usr_id_creator,
+    evt_name: expenses_db[0]?.evt_name,
+    evt_url: expenses_db[0]?.evt_url,
+    evt_image_url: expenses_db[0]?.evt_image_url,
+    evt_creation_timestamp: expenses_db[0]?.evt_creation_timestamp,
+    evt_modification_timestamp: expenses_db[0]?.evt_modification_timestamp,
+  };
+
   const expenses = Object.values(expenses_group).map((exp) => {
     const currentExpense = {
-      evt_id: exp[0]?.evt_id,
-      usr_id_creator: exp[0]?.usr_id_creator,
-      evt_name: exp[0]?.evt_name,
-      evt_url: exp[0]?.evt_url,
-      evt_image_url: exp[0]?.evt_image_url,
-      evt_creation_timestamp: exp[0]?.evt_creation_timestamp,
-      evt_modification_timestamp: exp[0]?.evt_modification_timestamp,
       exp_id: exp[0]?.exp_id,
       exp_concept: exp[0]?.exp_concept,
       exp_description: exp[0]?.exp_description,
@@ -84,7 +89,7 @@ router.post("/info", jwtVerify, async (req, res) => {
 
   try {
     //retornar un success
-    return res.json({ success: true, users, expenses });
+    return res.json({ success: true, users, expenses, event });
   } catch {
     return res.json({ success: false, msg: "An error occurred" });
   }
