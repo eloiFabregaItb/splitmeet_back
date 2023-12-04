@@ -1,0 +1,16 @@
+[0;1;31mx[0m apache2.service - The Apache HTTP Server
+     Loaded: loaded (]8;;file://raspberrypi/lib/systemd/system/apache2.service/lib/systemd/system/apache2.service]8;;; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;31mfailed[0m (Result: exit-code) since Thu 2023-11-23 16:08:52 CET; 13s ago
+   Duration: 6min 15.601s
+       Docs: ]8;;https://httpd.apache.org/docs/2.4/https://httpd.apache.org/docs/2.4/]8;;
+    Process: 101445 ExecStart=/usr/sbin/apachectl start [0;1;31m(code=exited, status=1/FAILURE)[0m
+        CPU: 72ms
+
+Nov 23 16:08:52 raspberrypi systemd[1]: Starting apache2.service - The Apache HTTP Server...
+Nov 23 16:08:52 raspberrypi apachectl[101448]: AH00526: Syntax error on line 11 of /etc/apache2/sites-enabled/000-default.conf:
+Nov 23 16:08:52 raspberrypi apachectl[101448]: Invalid command 'SSLEngine', perhaps misspelled or defined by a module not included in the server configuration
+Nov 23 16:08:52 raspberrypi apachectl[101445]: Action 'start' failed.
+Nov 23 16:08:52 raspberrypi apachectl[101445]: The Apache error log may have more information.
+Nov 23 16:08:52 raspberrypi systemd[1]: [0;1;39m[0;1;31m[0;1;39mapache2.service: Control process exited, code=exited, status=1/FAILURE[0m
+Nov 23 16:08:52 raspberrypi systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mapache2.service: Failed with result 'exit-code'.[0m
+Nov 23 16:08:52 raspberrypi systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start apache2.service - The Apache HTTP Server.[0m

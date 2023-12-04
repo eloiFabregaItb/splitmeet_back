@@ -15,11 +15,12 @@ router.post("/test", (req, res) => {
 })
 
 
+
 const GOOGLE_CALLBACK_URL = "https://qjkvldfn-5173.uks1.devtunnels.ms/"//://172.30.4.18:5173/home" //'http://localhost:3000/auth/google/callback'
 // Configure the Google OAuth strategy
 passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  clientID: "384807507489-0u90koe30ia44ibbtqitqloipk193i8h.apps.googleusercontent.com",
+  clientSecret: "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",
   callbackURL: GOOGLE_CALLBACK_URL, // Actualiza con tu URI de redirección
 }, async (accessToken, refreshToken, profile, done) => {
 

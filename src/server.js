@@ -25,6 +25,7 @@ import "./testing.js"
 
 // ----------- CONFIG -----------
 
+console.log(process.env.NODE_ENV)
 const NODE_ENV = process.env.NODE_ENV || "production"
 const NODE_ENV_PRODUCTION = process.env.NODE_ENV_PRODUCTION || "production"
 const NODE_ENV_DEVELOPMENT = process.env.NODE_ENV_DEVELOPMENT || "development"
@@ -42,7 +43,7 @@ const PORT = process.env.PORT ?? 3000
 const app = express()
 const server = createServer(app)
 
-
+app.use(cors());
 
 
 
@@ -62,7 +63,10 @@ io.on('connection', socketRecieverManager)
 if(!IS_IN_PRODUCTION){
   app.use(cors({origin: '*'}))
   app.use(logger('dev'))
+}else{
+  app.use(cors({origin: '*'}))
 }
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -74,6 +78,7 @@ app.use(session({
   secret: 'secret_session',
   resave: false,
   saveUninitialized: true,
+  store: new session.MemoryStore(),
 }));
 
 app.use(passport.initialize());
