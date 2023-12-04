@@ -11,6 +11,8 @@ import route_join from "./endpoints/join.js";
 import route_leave from "./endpoints/join.js";
 import route_image from "./endpoints/image.js";
 import route_info from "./endpoints/info.js";
+
+import { Event } from "../../models/Event.js";
 // import { db_getEventByID, db_getEventByUrl } from "../../db/db_events.js";
 
 router.use(async (req, res, next) => {

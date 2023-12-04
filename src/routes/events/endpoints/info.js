@@ -14,7 +14,6 @@ router.post("/info", jwtVerify, async (req, res) => {
     return res.status(400).json({ success: false, msg: "No event found" });
   }
   const ev = req.event;
-  console.log("");
 
   const [users] = await db.query(
     `SELECT User_participation.active, Users.usr_id, Users.usr_mail, Users.usr_name, Users.usr_img
@@ -22,7 +21,7 @@ router.post("/info", jwtVerify, async (req, res) => {
   INNER JOIN User_participation ON Events.evt_id = User_participation.evt_id
   INNER JOIN Users ON User_participation.usr_id = Users.usr_id
   WHERE Events.evt_url = ?;`,
-    ["7CKK1dlQ"]
+    [ev.url]
   );
 
   //TODO comprobar que el request es de un usuario interno al grupo
@@ -41,23 +40,13 @@ router.post("/info", jwtVerify, async (req, res) => {
     INNER JOIN Expensses ON Events.evt_id = Expensses.evt_id
     INNER JOIN Expensses_transaction ON Expensses.exp_id = Expensses_transaction.exp_id
     WHERE Events.evt_url = ?`,
-    ["7CKK1dlQ"]
+    [ev.url]
   );
 
   //UNFLAT EXPENSES
   const expenses_group = Object.groupBy(expenses_db, (e) => e.exp_id);
 
-  console.log(expenses_db[0]);
-
-  const event = {
-    evt_id: expenses_db[0]?.evt_id,
-    usr_id_creator: expenses_db[0]?.usr_id_creator,
-    evt_name: expenses_db[0]?.evt_name,
-    evt_url: expenses_db[0]?.evt_url,
-    evt_image_url: expenses_db[0]?.evt_image_url,
-    evt_creation_timestamp: expenses_db[0]?.evt_creation_timestamp,
-    evt_modification_timestamp: expenses_db[0]?.evt_modification_timestamp,
-  };
+  const event = ev.publicData();
 
   const expenses = Object.values(expenses_group).map((exp) => {
     const currentExpense = {
