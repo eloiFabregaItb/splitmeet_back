@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitation to SplitMeet</title>
+  <link rel="stylesheet" href="invitation-event-email.css">
+
+</head>
+<body>
+
+  <div className="header_logo">
+    <h1 className="header_splitmeet">SplitMeet</h1>
+    <img className="logo" src={logo} alt="Logo de SplitMeet" />
+  </div>
+
+
+
+  <img src="<%= invitator_pic %>">
+  <img src="<%= evnt_pic %>">
+  <p>Hi <%= userName %>,</p>
+
+  <p>Welcome to SplitMeet! To get started, please validate your email by clicking <a href="<%= validationLink %>">here</a>.</p>
+
+  <p>We're thrilled to have you on board. If you have any questions, feel free to reach out!</p>
+
+  <p>Best regards,<br> SplitMeet Team</p>
+
+</body>
+</html>

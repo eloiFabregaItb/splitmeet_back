@@ -33,12 +33,10 @@ export async function jwtVerify(req, res, next) {
       req.body.token || req.query.token || req.headers["x-access-token"];
 
     if (!token) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          msg: "A token is required for authentication",
-        });
+      return res.status(403).json({
+        success: false,
+        msg: "A token is required for authentication",
+      });
     }
 
     const user = await db_getUserByJWT(token);
