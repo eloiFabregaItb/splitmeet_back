@@ -7,6 +7,7 @@ import crypto from "crypto"
 import { jwtSign } from "../../../utils/jwt.js"
 import { hashPassword } from "../../../utils/crypto.js"
 import { sendEmail } from "../../../mail/mail.js"
+import { generateMailValidationUrl } from "../../../utils/signMail.js"
 
 
 
@@ -46,7 +47,7 @@ router.post('/signup', async (req, res) => {
    
     const templateData = {
       userName: usr_name,
-      validationLink: token,
+      validationLink: generateMailValidationUrl(usr_id),
     };
 
     sendEmail('./src/mail/templates/welcome-email.ejs', usr_mail, "Welcome", templateData)

@@ -7,14 +7,13 @@
 </head>
 <body>
   <h1>Hello <%= usr_name %>!</h1>
-  <p><%= ivitator_name %> has invited you to this event.</p>
+  <p><%= ivitator_name %> has invited you to this event:</p>
   <p><%= evnt_name %></p>
-  <img src="<%= evnt_image %>" alt="">
+  <img src="<%= evnt_image %>" alt="Event Image">
   <p>We hope to have you with us. Please click the button below to subscribe to the event:</p>
-  <form action="/confirm-invitation" method="post">
-    <input type="hidden" name="email" value="<%= email %>">
-    <button type="submit">Subscribe</button>
-  </form>
+  <a href="<%= sing_mail %>">
+    <button style="padding: 10px 20px; background-color: #01579B; color: white; border: none; border-radius: 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Subscribe</button>
+  </a>
   <p>Thank you!</p>
 </body>
 </html>
