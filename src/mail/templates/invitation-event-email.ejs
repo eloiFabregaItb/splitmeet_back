@@ -3,28 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invitation to SplitMeet</title>
-  <link rel="stylesheet" href="invitation-event-email.css">
-
+  <title>Event Invitation</title>
 </head>
 <body>
-
-  <div className="header_logo">
-    <h1 className="header_splitmeet">SplitMeet</h1>
-    <img className="logo" src={logo} alt="Logo de SplitMeet" />
-  </div>
-
-
-
-  <img src="<%= invitator_pic %>">
-  <img src="<%= evnt_pic %>">
-  <p>Hi <%= userName %>,</p>
-
-  <p>Welcome to SplitMeet! To get started, please validate your email by clicking <a href="<%= validationLink %>">here</a>.</p>
-
-  <p>We're thrilled to have you on board. If you have any questions, feel free to reach out!</p>
-
-  <p>Best regards,<br> SplitMeet Team</p>
-
+  <h1>Hello <%= usr_name %>!</h1>
+  <p><%= ivitator_name %> has invited you to this event.</p>
+  <p><%= evnt_name %></p>
+  <img src="<%= evnt_image %>" alt="">
+  <p>We hope to have you with us. Please click the button below to subscribe to the event:</p>
+  <form action="/confirm-invitation" method="post">
+    <input type="hidden" name="email" value="<%= email %>">
+    <button type="submit">Subscribe</button>
+  </form>
+  <p>Thank you!</p>
 </body>
 </html>
