@@ -6,6 +6,9 @@ import crypto from "crypto"
 
 import { jwtSign } from "../../../utils/jwt.js"
 import { hashPassword } from "../../../utils/crypto.js"
+import { sendEmail } from "../../../mail/mail.js"
+import { generateMailValidationUrl } from "../../../utils/signMail.js"
+
 
 
 
@@ -40,8 +43,18 @@ router.post('/signup', async (req, res) => {
     const token = jwtSign({ usr_mail, usr_id })
 
 
+    // send email
+   
+    const templateData = {
+      userName: usr_name,
+      validationLink: generateMailValidationUrl(usr_id),
+    };
+
+    sendEmail('./src/mail/templates/welcome-email.ejs', usr_mail, "Welcome", templateData)
+
     //retornar un success
     return res.json({ success: true, jwt: token });
+
 
 
   } catch (err) {

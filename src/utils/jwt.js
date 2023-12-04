@@ -4,8 +4,8 @@ import { db_getUserByJWT } from "../db/db_users.js";
 const JWT_TIMEOUT = process.env.JWT_TIMEOUT || "48h";
 const JWT_SECRET = process.env.JWT_SECRET || "secretJWT";
 
-export function jwtSign(data) {
-  return jwt.sign(data, JWT_SECRET, { expiresIn: JWT_TIMEOUT });
+export function jwtSign(data, timeout = undefined) {
+  return jwt.sign(data, JWT_SECRET, { expiresIn: timeout || JWT_TIMEOUT });
 }
 
 /**
@@ -33,12 +33,10 @@ export async function jwtVerify(req, res, next) {
       req.body.token || req.query.token || req.headers["x-access-token"];
 
     if (!token) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          msg: "A token is required for authentication",
-        });
+      return res.status(403).json({
+        success: false,
+        msg: "A token is required for authentication",
+      });
     }
 
     const user = await db_getUserByJWT(token);
