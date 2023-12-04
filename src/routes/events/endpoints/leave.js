@@ -27,7 +27,8 @@ router.post('/leave',jwtVerify, async (req, res) => {
 
       //TODO add message "user has lleaved"
       //TODO comprobar que no hay deudas
-      await db.query(`DELETE FROM User_participation WHERE evt_id = ?, usr_id = ?`,[req.event.id,req.user.id])
+      // await db.query(`DELETE FROM User_participation WHERE evt_id = ?, usr_id = ?`,[req.event.id,req.user.id])
+      await db.query(`UPDATE FROM User_participation SET active = false WHERE evt_id = ?, usr_id = ?`,[req.event.id,req.user.id])
 
       //retornar un success
       return res.json({ success: true});

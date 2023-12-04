@@ -56,11 +56,6 @@ router.post("/info", jwtVerify, async (req, res) => {
       exp.map((x) => x.usr_id_borrower)
     );
 
-    const participatingInExpense =
-      exp.some((x) => x.usr_id_borrower === req.user.id) ||
-      exp[0].usr_id_lender === req.user.id;
-    console.log();
-
     const currentExpense = {
       exp_id: exp[0]?.exp_id,
       exp_concept: exp[0]?.exp_concept,
@@ -72,6 +67,10 @@ router.post("/info", jwtVerify, async (req, res) => {
       exp_foto3: exp[0]?.exp_foto3,
       usr_id_lender: exp[0]?.usr_id_lender,
     };
+
+    const participatingInExpense =
+      exp.some((x) => x.usr_id_borrower === req.user.id) ||
+      currentExpense.usr_id_lender === req.user.id;
 
     return {
       total: exp.reduce((acc, v) => acc + v.tra_amount, 0),

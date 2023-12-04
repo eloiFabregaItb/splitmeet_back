@@ -10,7 +10,7 @@ import { User } from "./models/User.js";
 // const tables = await db.query("SHOW TABLES");
 // console.log(tables[0].map((x) => x.Tables_in_splitmeet).join(" | "));
 
-//DB SELECT
+// //DB SELECT
 // let [rows, fields] = await db.query("SELECT * FROM Users");
 // console.log(rows);
 
@@ -102,3 +102,21 @@ import { User } from "./models/User.js";
 
 // const mailData = await service_sendMail({to:"orillad2003@gmail.com",subject:"Your request is being processed",html:`please be patient we will answer as soon as we can.<br>`})
 // console.log(mailData);
+
+
+
+// const transporter = nodemailer.createTransport({
+//     host: 'smtp.gmail.com',
+//     port: 465,
+//     secure: true,
+//     auth: {
+//       user: process.env.SMTP_MAIL, 
+//       pass: process.env.SMTP_KEY  
+//     }
+//   });
+  
+
+
+// const templatePath = path.join(__dirname, 'splitmeet_back/src/mail/welcome-email.ejs');
+
+
