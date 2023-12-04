@@ -7,10 +7,8 @@ const FRONTEND_URL = process.env.FRONTEND_URL || "https://splitmeet.ddns.net";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secretJWT";
 
-export function generateMailValidationUrl(user) {
-  console.log(user.id);
-
-  const token = jwtSign({ usr_id: user.id, method: MAIL_VALIDATE }, "24h");
+export function generateMailValidationUrl(usr_id) {
+  const token = jwtSign({ usr_id, method: MAIL_VALIDATE }, "24h");
   return FRONTEND_URL + "/validateMail/" + token;
 }
 

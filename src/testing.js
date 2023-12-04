@@ -47,19 +47,19 @@ import { User } from "./models/User.js";
 // await db.query(`DELETE FROM User_participation WHERE usr_id = ?`,['1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
 
 //JWT OF USER
-// const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
-//   "user4",
+// const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?", [
+//   "85d45e67-f9c9-44b0-8946-f9e9f8443c4a",
 // ]);
 // const user = new User(rows[0]);
 // user.signJWT();
 // console.log(user.name, user.jwt);
 
-const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
-  "user3",
-]);
-const user = new User(rows[0]);
-const token = generateMailValidationUrl(user);
-console.log(token);
+// const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
+//   "user3",
+// ]);
+// const user = new User(rows[0]);
+// const token = generateMailValidationUrl(user);
+// console.log(token);
 // const userFromMail = await checkMailValidationUrl(token);
 // console.log(userFromMail);
 

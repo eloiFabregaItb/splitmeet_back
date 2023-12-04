@@ -11,6 +11,7 @@ import route_join from "./endpoints/join.js";
 import route_leave from "./endpoints/join.js";
 import route_image from "./endpoints/image.js";
 import route_info from "./endpoints/info.js";
+import route_exit from "./endpoints/exit.js";
 
 import { Event } from "../../models/Event.js";
 // import { db_getEventByID, db_getEventByUrl } from "../../db/db_events.js";
@@ -42,6 +43,9 @@ router.use("", route_image);
 router.use("", route_info);
 //      /event/info
 
+router.use("", route_exit);
+//      /event/exit
+
 export async function makeEventFromBody(body) {
   if (body.evt_url) {
     try {
@@ -49,7 +53,6 @@ export async function makeEventFromBody(body) {
         body.evt_url,
       ]);
       const ev = new Event(rows[0]);
-      console.log(ev);
       return ev;
     } catch {
       //url not found

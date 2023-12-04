@@ -28,7 +28,7 @@ async function getUserParticipatingEvents(usr_id) {
     `SELECT Events.*
   FROM Events
   JOIN User_participation ON Events.evt_id = User_participation.evt_id
-  WHERE User_participation.usr_id = ?`,
+  WHERE User_participation.usr_id = ? AND User_participation.active = 1`,
     [usr_id]
   );
 
