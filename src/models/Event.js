@@ -28,7 +28,9 @@ export class Event {
       `SELECT Users.* FROM Users
     JOIN User_participation ON Users.usr_id = User_participation.usr_id
     JOIN Events ON User_participation.evt_id = Events.evt_id
-    WHERE Events.evt_id = ? AND User_participation.active = true`,[this.id,this.id])
+    WHERE Events.evt_id = ? AND User_participation.active = 1`,
+      [this.id]
+    );
 
     if (usersRows.length <= 0) return undefined;
 

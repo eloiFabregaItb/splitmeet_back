@@ -23,8 +23,6 @@ router.post("/validateMail", async (req, res) => {
 
     if (!usr_id) return res.json({ success: false, msg: "Error" });
 
-    console.log("validating user ");
-
     const [rows] = await db.query(
       "UPDATE Users SET usr_mail_validated = 1 WHERE usr_id = ?;",
       [usr_id]
