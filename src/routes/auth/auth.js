@@ -22,7 +22,7 @@ router.use("/google", googleRouter);
 //        /auth/google
 //        /auth/google/callback
 
-router.use("", validateMailRouter);
+router.use("cod", validateMailRouter);
 //        /auth/validateMail
 
 //test protected route

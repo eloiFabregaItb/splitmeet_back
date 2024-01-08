@@ -27,7 +27,7 @@ export async function sendEmail(templatePath, usr_mail, subject, templateData) {
         const html = compiledTemplate(templateData);
         mailOptions.html = html;
 
-        const info = transporter.sendMail(mailOptions);
+        const info = await transporter.sendMail(mailOptions);
         console.log('Email sent:', info.response);
     } catch (error) {
         console.error('Error:', error.message);

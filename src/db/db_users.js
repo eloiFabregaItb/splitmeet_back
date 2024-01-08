@@ -39,6 +39,24 @@ export async function db_getUserByID(id){
 }
 
 
+export async function db_getUserByEmail(email){
+  if(!email) return
+
+  try{
+    const [rows] = await db.query(
+      "SELECT * FROM Users WHERE usr_mail = ?",
+      [email]
+    )
+
+    if(rows && rows[0]){
+      return( new User(rows[0]))
+    }
+  }catch(err){
+    console.error(err)
+  }
+}
+
+
 
 export async function db_getUserByJWT(token){
   if (!token) return
