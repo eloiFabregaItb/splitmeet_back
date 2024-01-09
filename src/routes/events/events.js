@@ -12,6 +12,7 @@ import route_leave from "./endpoints/join.js";
 import route_image from "./endpoints/image.js";
 import route_info from "./endpoints/info.js";
 import route_exit from "./endpoints/exit.js";
+import route_invite from "./endpoints/invite.js";
 
 import { Event } from "../../models/Event.js";
 // import { db_getEventByID, db_getEventByUrl } from "../../db/db_events.js";
@@ -44,6 +45,9 @@ router.use("", route_info);
 //      /event/info
 
 router.use("", route_exit);
+//      /event/exit
+
+router.use("", route_invite);
 //      /event/exit
 
 export async function makeEventFromBody(body) {

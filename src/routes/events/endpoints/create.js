@@ -40,7 +40,7 @@ router.post("/create", jwtVerify, async (req, res) => {
   );
 
   //retornar un success
-  return res.json({ success: true, url_code: newUrl });
+  return res.json({ success: true, evt_url: newUrl,url_code: newUrl/*url_code   deprecated*/ });
 });
 
 export async function generateNewEventUrl() {
