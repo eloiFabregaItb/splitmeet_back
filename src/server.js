@@ -54,7 +54,6 @@ if (!IS_IN_PRODUCTION) {
   app.use(logger("dev"));
 }else{
   app.use(cors({ origin: "*" }));
-  app.use(logger("dev"));
 }
 
 app.use(express.json());
