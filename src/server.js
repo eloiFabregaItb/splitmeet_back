@@ -45,8 +45,14 @@ export const io = new Server(server, {
 });
 io.on("connection", socketRecieverManager);
 
+// ---------CORS-------------
+app.use(cors());
+
 // ----------- MIDLEWARE -----------
 if (!IS_IN_PRODUCTION) {
+  app.use(cors({ origin: "*" }));
+  app.use(logger("dev"));
+}else{
   app.use(cors({ origin: "*" }));
   app.use(logger("dev"));
 }
