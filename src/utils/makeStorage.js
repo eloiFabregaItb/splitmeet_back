@@ -17,7 +17,7 @@ export function makeStorageSingleFile(url,
   //file saving configuracion
   return multer.diskStorage({
     destination: function (req, file, done) {
-  
+      console.log(req.body)
       //si no existe la carpeta, entonces crearla
       if (!fs.existsSync(url)) {
         fs.mkdirSync(url, { recursive: true });
@@ -27,6 +27,7 @@ export function makeStorageSingleFile(url,
     },
     filename:async function (req, file, done) {
       //this 2 lines does the same as <jwtVerify>
+      console.log(req.body)
       const user = await jwtUserFromToken(req.body.token)
       req.user = user
 

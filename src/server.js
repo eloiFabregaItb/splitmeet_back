@@ -79,6 +79,8 @@ app.use("/user", router_user);
 app.use("/event", router_events);
 if (!IS_IN_PRODUCTION) {
   app.use("/test", router_test);
+
+
 }
 
 // ----------- SERVER -----------
