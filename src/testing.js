@@ -4,7 +4,11 @@ import {
   generateMailValidationUrl,
 } from "./utils/signMail.js";
 import { User } from "./models/User.js";
+<<<<<<< HEAD
 import { Event } from "./models/Event.js";
+=======
+import { sendEmail } from "./mail/mail.js";
+>>>>>>> abd38d98585158b9c0381bc0f087d3497bfb3480
 // import multer from "multer";
 
 //TABLES
@@ -86,6 +90,8 @@ ev.getBalances()
 //   },
 // });
 
+
+
 // export async function service_sendMail({ to, subject, html }) {
 //   const mailData = {
 //     from:process.env.MAILER_USER,  // sender address
@@ -109,6 +115,15 @@ ev.getBalances()
 // const mailData = await service_sendMail({to:"orillad2003@gmail.com",subject:"Your request is being processed",html:`please be patient we will answer as soon as we can.<br>`})
 // console.log(mailData);
 
+const templateData = {
+  usr_name: "orillad",
+  ivitator_name: "test",
+  evnt_name: "Esquiada",
+  evnt_image: "https://media.istockphoto.com/id/1309988966/es/foto/esqu%C3%AD-en-polvo.jpg?s=612x612&w=0&k=20&c=l4wgeZPX_6o2CI64QbtY2pxvzljRJwHGWJYvTSowIys=",
+  sing_mail: "efsdfdsf",
+};
+
+sendEmail('/home/orillad/splitmeet/splitmeet_back/src/mail/templates/invitation-event-email.ejs', 'orillad2003@gmail.com', "Invitation", templateData)
 
 
 // const transporter = nodemailer.createTransport({
