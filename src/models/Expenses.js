@@ -20,21 +20,32 @@ export class Expenses{
     las columnas representan los usuarios que han pedido
     
     */
+
+    console.log(JSON.stringify(this.list.map(({id,concept,description,date,coords,photos,...x})=>x),undefined,2))
+
     const userIds = users.map(x=>x.id)
     
-    const balanceMatrix = Array.from({length:users.length}).map(_=>Array.from({length:users.length}))
-    console.log(userIds)
-    console.log(balanceMatrix)
+    const balanceMatrix = Array.from({length:users.length}).map(_=>Array.from({length:users.length}).fill(0))
 
     for (const exp of this.list) {
       const i = userIds.indexOf(exp.usrLenderId)
       //esta es la index del prestador (fila)
 
-      // for (const transaction of exp.list) {
-      // const j = userIds.indexOf(transaction.usrBorrowerId)
-      // balanceMatrix[i][j]+=transaction.amout
-      // }
+      for (const transaction of exp.list) {
+        const j = userIds.indexOf(transaction.usrBorrowerId)
+        //este es el index del adeudado (columna)
+
+        //keep the graph matrix symetric so A>B debt cancels with B>A
+        if(i!==j){
+          balanceMatrix[j][i]-= transaction.amount
+          balanceMatrix[i][j]+= transaction.amount
+        }
+      }
     }
+
+    console.log(userIds)
+    console.log(balanceMatrix)
+
 
 
   }

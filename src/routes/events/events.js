@@ -14,6 +14,8 @@ import route_info from "./endpoints/info.js";
 import route_exit from "./endpoints/exit.js";
 import route_invite from "./endpoints/invite.js";
 
+import route_expenses_new from "./expenses_endpoints/new.js"
+
 import { Event } from "../../models/Event.js";
 // import { db_getEventByID, db_getEventByUrl } from "../../db/db_events.js";
 
@@ -49,6 +51,13 @@ router.use("", route_exit);
 
 router.use("", route_invite);
 //      /event/exit
+
+
+router.use("/expenses", route_expenses_new);
+//      /event/expenses/new
+
+
+
 
 export async function makeEventFromBody(body) {
   if (body.evt_url) {

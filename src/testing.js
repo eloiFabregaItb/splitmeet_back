@@ -4,11 +4,8 @@ import {
   generateMailValidationUrl,
 } from "./utils/signMail.js";
 import { User } from "./models/User.js";
-<<<<<<< HEAD
 import { Event } from "./models/Event.js";
-=======
 import { sendEmail } from "./mail/mail.js";
->>>>>>> abd38d98585158b9c0381bc0f087d3497bfb3480
 // import multer from "multer";
 
 //TABLES
@@ -19,10 +16,10 @@ import { sendEmail } from "./mail/mail.js";
 // let [rows, fields] = await db.query("SELECT * FROM Expensses");
 // console.log(rows);
 
-let [rowsEvent] = await db.query("SELECT * FROM Events WHERE evt_id = ?",["c86e47e7-0f88-424d-8ccb-2937c0535bc2"]);
-const ev = new Event(rowsEvent[0])
-console.log(ev)
-ev.getBalances()
+// let [rowsEvent] = await db.query("SELECT * FROM Events WHERE evt_id = ?",["c86e47e7-0f88-424d-8ccb-2937c0535bc2"]);
+// const ev = new Event(rowsEvent[0])
+// console.log(ev)
+// ev.getBalances()
 
 //DB SELECT EVENTS
 // let [rows, fields] = await db.query("SELECT * FROM Events");
