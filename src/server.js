@@ -50,6 +50,8 @@ if (!IS_IN_PRODUCTION) {
   app.use(cors({ origin: "*" }));
   app.use(logger("dev"));
 }
+app.disable('x-powered-by')
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
