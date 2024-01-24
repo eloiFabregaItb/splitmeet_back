@@ -24,6 +24,9 @@ export default router
 const EVENT_IMG_URL = "public/evtPic/"
 const storage = makeStorageSingleFile(EVENT_IMG_URL,async ({req,extension,user})=>{
 
+
+  console.log(req.body,extension,user)
+  
   const ev = await makeEventFromBody(req.body)
   if(!ev) throw new Error("No event identification")
 
@@ -50,7 +53,7 @@ const upload = multer({ storage });
 
 
 
-//POST /events/img
+//POST /event/img
 router.post('/img',upload.single("img"),async (req, res) => {
 
   if (!req.file) {

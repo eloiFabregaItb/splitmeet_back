@@ -15,7 +15,7 @@ export async function db_updateEventFields(event, fields) {
     ${fields.map((x) => (allFields[x] ? x + " = ? " : "")).join(",")}
     WHERE evt_id = ?`;
 
-  const values = fields.flatMap((x) => (allFields[x] ? allFieldsW[x] : []));
+  const values = fields.flatMap((x) => (allFields[x] ? allFields[x] : []));
   values.push(event.id);
 
   try {

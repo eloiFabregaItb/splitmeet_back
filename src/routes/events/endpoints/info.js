@@ -24,14 +24,14 @@ router.post("/info", jwtVerify, async (req, res) => {
     [ev.url]
   );
 
-  //TODO comprobar que el request es de un usuario interno al grupo
-  // if (!users.some((x) => x.id !== req.user.id)) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     msg: "You are not joined",
-  //     error_code: "UNAUTHORIZED",
-  //   });
-  // }
+  //comprobar que el request es de un usuario interno al grupo
+  if (!users.some((x) => x.usr_id === req.user.id && x.active)) {
+    return res.status(400).json({
+      success: false,
+      msg: "You are not joined",
+      error_code: "UNAUTHORIZED",
+    });
+  }
 
   //expenses sin agrupar, todas en un array_flat
   const [expenses_db] = await db.query(
@@ -49,6 +49,13 @@ router.post("/info", jwtVerify, async (req, res) => {
   const event = ev.publicData();
 
   const expenses = Object.values(expenses_group).map((exp) => {
+    console.log("USER", req.user.id);
+    console.log("LENDER", exp[0].usr_id_lender);
+    console.log(
+      "EXPENSES",
+      exp.map((x) => x.usr_id_borrower)
+    );
+
     const currentExpense = {
       exp_id: exp[0]?.exp_id,
       exp_concept: exp[0]?.exp_concept,
@@ -61,13 +68,19 @@ router.post("/info", jwtVerify, async (req, res) => {
       usr_id_lender: exp[0]?.usr_id_lender,
     };
 
+    const participatingInExpense =
+      exp.some((x) => x.usr_id_borrower === req.user.id) ||
+      currentExpense.usr_id_lender === req.user.id;
+
     return {
       total: exp.reduce((acc, v) => acc + v.tra_amount, 0),
-      status:
-        currentExpense.usr_id_lender === req.user.id ? "PAID" : "RECEIVED", // TODO "NONE"if no participated in this transaction
+      status: !participatingInExpense
+        ? "NONE"
+        : currentExpense.usr_id_lender === req.user.id
+        ? "PAID"
+        : "RECEIVED",
 
       ...currentExpense,
-
       transactions: exp.map((x) => ({
         tra_amount: x.tra_amount,
         usr_id_borrower: x.usr_id_borrower,

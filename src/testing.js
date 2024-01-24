@@ -4,6 +4,7 @@ import {
   generateMailValidationUrl,
 } from "./utils/signMail.js";
 import { User } from "./models/User.js";
+import { Event } from "./models/Event.js";
 import { sendEmail } from "./mail/mail.js";
 // import multer from "multer";
 
@@ -12,8 +13,13 @@ import { sendEmail } from "./mail/mail.js";
 // console.log(tables[0].map((x) => x.Tables_in_splitmeet).join(" | "));
 
 // //DB SELECT
-// let [rows, fields] = await db.query("SELECT * FROM Users");
+// let [rows, fields] = await db.query("SELECT * FROM Expensses");
 // console.log(rows);
+
+// let [rowsEvent] = await db.query("SELECT * FROM Events WHERE evt_id = ?",["c86e47e7-0f88-424d-8ccb-2937c0535bc2"]);
+// const ev = new Event(rowsEvent[0])
+// console.log(ev)
+// ev.getBalances()
 
 //DB SELECT EVENTS
 // let [rows, fields] = await db.query("SELECT * FROM Events");
@@ -48,19 +54,19 @@ import { sendEmail } from "./mail/mail.js";
 // await db.query(`DELETE FROM User_participation WHERE usr_id = ?`,['1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
 
 //JWT OF USER
-// const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
-//   "user4",
+// const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?", [
+//   "85d45e67-f9c9-44b0-8946-f9e9f8443c4a",
 // ]);
 // const user = new User(rows[0]);
 // user.signJWT();
 // console.log(user.name, user.jwt);
 
-const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
-  "user3",
-]);
-const user = new User(rows[0]);
-const token = generateMailValidationUrl(user);
-console.log(token);
+// const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
+//   "user3",
+// ]);
+// const user = new User(rows[0]);
+// const token = generateMailValidationUrl(user);
+// console.log(token);
 // const userFromMail = await checkMailValidationUrl(token);
 // console.log(userFromMail);
 
