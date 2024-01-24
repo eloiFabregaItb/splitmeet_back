@@ -45,7 +45,8 @@ router.post("/invite", jwtVerify, async (req, res) => {
             email,
             usr_name:usrEmail?.name || email,
             ivitator_name:req.user.name,
-            evnt_image:`api.split-meet.com/public/evtPic/${ev.imgUrl}`,
+            evnt_image:`172.30.4.55:3000/public/evtPic/${ev.imgUrl}`,
+            // evnt_image:`api.split-meet.com/public/evtPic/${ev.imgUrl}`,
             string_mail:email,
             evnt_name:ev.name,
             evt_url:ev.url

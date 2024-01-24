@@ -18,7 +18,7 @@ import { sendEmail } from "./mail/mail.js";
 
 // let [rowsEvent] = await db.query("SELECT * FROM Events WHERE evt_id = ?",["c86e47e7-0f88-424d-8ccb-2937c0535bc2"]);
 // const ev = new Event(rowsEvent[0])
-// console.log(ev)
+// // console.log(ev)
 // ev.getBalances()
 
 //DB SELECT EVENTS
@@ -54,12 +54,12 @@ import { sendEmail } from "./mail/mail.js";
 // await db.query(`DELETE FROM User_participation WHERE usr_id = ?`,['1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
 
 //JWT OF USER
-// const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?", [
-//   "85d45e67-f9c9-44b0-8946-f9e9f8443c4a",
-// ]);
-// const user = new User(rows[0]);
-// user.signJWT();
-// console.log(user.name, user.jwt);
+const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?", [
+  "85d45e67-f9c9-44b0-8946-f9e9f8443c4a",
+]);
+const user = new User(rows[0]);
+user.signJWT();
+console.log(user.name, user.jwt);
 
 // const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
 //   "user3",
@@ -112,15 +112,15 @@ import { sendEmail } from "./mail/mail.js";
 // const mailData = await service_sendMail({to:"orillad2003@gmail.com",subject:"Your request is being processed",html:`please be patient we will answer as soon as we can.<br>`})
 // console.log(mailData);
 
-const templateData = {
-  usr_name: "orillad",
-  ivitator_name: "test",
-  evnt_name: "Esquiada",
-  evnt_image: "https://media.istockphoto.com/id/1309988966/es/foto/esqu%C3%AD-en-polvo.jpg?s=612x612&w=0&k=20&c=l4wgeZPX_6o2CI64QbtY2pxvzljRJwHGWJYvTSowIys=",
-  sing_mail: "efsdfdsf",
-};
+// const templateData = {
+//   usr_name: "orillad",
+//   ivitator_name: "test",
+//   evnt_name: "Esquiada",
+//   evnt_image: "https://media.istockphoto.com/id/1309988966/es/foto/esqu%C3%AD-en-polvo.jpg?s=612x612&w=0&k=20&c=l4wgeZPX_6o2CI64QbtY2pxvzljRJwHGWJYvTSowIys=",
+//   sing_mail: "efsdfdsf",
+// };
 
-sendEmail('/home/orillad/splitmeet/splitmeet_back/src/mail/templates/invitation-event-email.ejs', 'orillad2003@gmail.com', "Invitation", templateData)
+// sendEmail('/home/orillad/splitmeet/splitmeet_back/src/mail/templates/invitation-event-email.ejs', 'orillad2003@gmail.com', "Invitation", templateData)
 
 
 // const transporter = nodemailer.createTransport({
@@ -138,3 +138,104 @@ sendEmail('/home/orillad/splitmeet/splitmeet_back/src/mail/templates/invitation-
 // const templatePath = path.join(__dirname, 'splitmeet_back/src/mail/welcome-email.ejs');
 
 
+
+
+
+function simplifyDebts(debtMatrix) {
+  // Check if the debt matrix is valid
+  if (!validateDebtMatrix(debtMatrix)) {
+    throw new Error('Invalid debt matrix');
+  }
+
+  // Initialize variables
+  let maxTransactionValue = Infinity;
+  let optimalTransactions = [];
+
+  // Iterate through all possible pairs of debtors and creditors
+  for (let debtor = 0; debtor < debtMatrix.length; debtor++) {
+    for (let creditor = 0; creditor < debtMatrix.length; creditor++) {
+      if (debtMatrix[debtor][creditor] > 0 && debtor !== creditor) {
+        // Check if the remaining debt is less than the current maximum transaction value
+        let remainingDebt = debtMatrix[debtor][creditor];
+        if (remainingDebt < maxTransactionValue) {
+          maxTransactionValue = remainingDebt;
+          optimalTransactions = [];
+        }
+
+        // Check if there's a way to simplify the debt using a single transaction
+        if (isDebtSimplifiable(debtMatrix, debtor, creditor)) {
+          const simplifiedDebtMatrix = simplifyDebtUsingSingleTransaction(debtMatrix, debtor, creditor);
+
+          // Check if the simplified debt matrix has no remaining debts
+          if (!hasRemainingDebts(simplifiedDebtMatrix)) {
+            // Found an optimal solution
+            optimalTransactions.push([debtor, creditor]);
+          }
+        }
+      }
+    }
+  }
+
+  // Return the optimal transactions
+  return optimalTransactions;
+}
+
+function validateDebtMatrix(debtMatrix) {
+  if (!Array.isArray(debtMatrix) || debtMatrix.length === 0) {
+    return false;
+  }
+
+  for (let i = 0; i < debtMatrix.length; i++) {
+    if (!Array.isArray(debtMatrix[i]) || debtMatrix[i].length !== debtMatrix.length) {
+      return false;
+    }
+  }
+
+  // Check if the matrix is symmetric with opposite signs in the upper and lower triangle
+  for (let i = 0; i < debtMatrix.length; i++) {
+    for (let j = 0; j < debtMatrix.length; j++) {
+      if (debtMatrix[i][j] !== -debtMatrix[j][i] || debtMatrix[i][i] !== 0) {
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+function isDebtSimplifiable(debtMatrix, debtor, creditor) {
+  // Check if the debtor's remaining debt is equal to the creditor's debt
+  const debtorRemainingDebt = debtMatrix[debtor][debtor];
+  const creditorRemainingDebt = debtMatrix[creditor][creditor];
+  return debtorRemainingDebt === debtMatrix[debtor][creditor] === creditorRemainingDebt;
+}
+
+function simplifyDebtUsingSingleTransaction(debtMatrix, debtor, creditor) {
+  const simplifiedDebtMatrix = debtMatrix.slice();
+
+  // Transfer the remaining debt from debtor to creditor
+  simplifiedDebtMatrix[debtor][debtor] -= debtMatrix[debtor][creditor];
+  simplifiedDebtMatrix[creditor][creditor] += debtMatrix[debtor][creditor];
+  simplifiedDebtMatrix[debtor][creditor] = 0;
+  simplifiedDebtMatrix[creditor][debtor] = 0;
+
+  return simplifiedDebtMatrix;
+}
+
+function hasRemainingDebts(debtMatrix) {
+  for (let i = 0; i < debtMatrix.length; i++) {
+    for (let j = 0; j < debtMatrix.length; j++) {
+      if (debtMatrix[i][j] !== 0) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+
+
+const debtMatrix = [[0, -5, -6], [5, 0, 7], [6, -7, 0]];
+const optimalTransactions = simplifyDebts(debtMatrix);
+console.log(optimalTransactions)

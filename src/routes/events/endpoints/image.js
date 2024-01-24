@@ -3,6 +3,8 @@ import multer from "multer";
 import fs from "fs"
 import crypto from "crypto"
 import path from "path"
+import bodyParser from "body-parser"
+
 
 import axios from "axios";
 import { makeStorageSingleFile } from "../../../utils/makeStorage.js";
@@ -24,9 +26,6 @@ export default router
 const EVENT_IMG_URL = "public/evtPic/"
 const storage = makeStorageSingleFile(EVENT_IMG_URL,async ({req,extension,user})=>{
 
-
-  console.log(req.body,extension,user)
-  
   const ev = await makeEventFromBody(req.body)
   if(!ev) throw new Error("No event identification")
 
