@@ -10,6 +10,7 @@ import loginRouter from "./endpoints/login.js";
 import signupRouter from "./endpoints/signup.js";
 import googleRouter from "./endpoints/google.js";
 import validateMailRouter from "./endpoints/validateMail.js";
+import resendValidate from "./endpoints/resendValidate.js"
 
 router.use("", loginRouter);
 //        /auth/login
@@ -24,6 +25,9 @@ router.use("/google", googleRouter);
 
 router.use("cod", validateMailRouter);
 //        /auth/validateMail
+
+router.use("",resendValidate);
+//        /auth/resendValidate
 
 //test protected route
 router.post("/protected", jwtVerify, async (req, res) => {

@@ -44,7 +44,6 @@ router.post('/signup', async (req, res) => {
 
 
     // send email
-   
     const templateData = {
       userName: usr_name,
       validationLink: generateMailValidationUrl(usr_id),
@@ -69,3 +68,5 @@ router.post('/signup', async (req, res) => {
   }
 
 })
+
+

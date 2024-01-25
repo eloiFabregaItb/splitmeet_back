@@ -1,5 +1,6 @@
 import db from "../db/db.js";
 import { jwtSign } from "../utils/jwt.js";
+import { Expenses } from "./Expenses.js";
 import { User } from "./User.js";
 
 export class Event {
@@ -70,5 +71,25 @@ export class Event {
     }
 
     return result;
+  }
+
+
+
+  async getExpenses(){
+    let [rows, fields] = await db.query(`SELECT *
+    FROM Expensses
+    JOIN Expensses_transaction ON Expensses.exp_id = Expensses_transaction.exp_id
+    WHERE Expensses.evt_id = ?`,[this.id]);
+    this.expenses = new Expenses(rows)
+    return this.expenses
+  }
+
+  async getBalances(){
+    if(!this.expenses) await this.getExpenses()
+    if(!this.users) await this.getUsers()
+
+    const balance = this.expenses.getBalance(this.users)
+
+    return balance
   }
 }
