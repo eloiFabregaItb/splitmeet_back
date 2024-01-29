@@ -43,10 +43,11 @@ export class Expenses{
       }
     }
 
-    console.log(userIds)
-    console.log(balanceMatrix)
+    // console.log(userIds)
+    // console.log(balanceMatrix)
 
-
+    this.balance = balanceMatrix
+    return balanceMatrix
 
   }
 
@@ -87,3 +88,25 @@ export class Expense{
   }
 
 }
+
+
+
+/*
+[
+  [0,-5,-6],
+  [5,0,7],
+  [6,-7,0]
+]
+
+user0 -(5$)-> user1
+user0 -(6$)-> user2
+user2 -(7$)-> user1
+
+user0 -(11$)-> user2
+user2 -(12$)-> user1
+
+user0 -(11$)-> user1
+user2 -(1$)-> user1
+
+
+*/

@@ -11,15 +11,15 @@
 
   <h1>Welcome to SplitMeet!</h1>
 
-  <p>Hi ${userName},</p>
+  <p>Hi <%= userName %>,</p>
 
   <p>We received a request to resend the validation email for your SplitMeet account. To proceed, please click the
     button below:</p>
 
-  <a href="${validationLink}">
+  <a href="<%= validationLink %>">
     <button
-      style="padding: 10px 20px; background-color: #01579B; color: white; border: none; border-radius: 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Resend
-      Validation Email</button>
+      style="padding: 10px 20px; background-color: #01579B; color: white; border: none; border-radius: 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Validate
+      Email</button>
   </a>
 
   <p>If you didn't request this email, please ignore it. Your account is still valid, and no action is required.</p>

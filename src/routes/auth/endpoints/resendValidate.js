@@ -15,6 +15,7 @@ export default router
 router.post("/resendValidate", jwtVerify, async (req,res)=>{
   const user = req.user
 
+  console.log(user)
 
   // send email
   
@@ -23,7 +24,7 @@ router.post("/resendValidate", jwtVerify, async (req,res)=>{
     validationLink: generateMailValidationUrl(user.id),
   };
 
-  sendEmail('./src/mail/templates/validation-email.ejs', usr_mail, "Welcome", templateData)
+  sendEmail('./src/mail/templates/validation-email.ejs', user.mail, "Welcome", templateData)
 
   //retornar un success
   return res.json({ success: true });

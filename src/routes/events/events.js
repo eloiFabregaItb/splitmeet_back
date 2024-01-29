@@ -13,6 +13,7 @@ import route_image from "./endpoints/image.js";
 import route_info from "./endpoints/info.js";
 import route_exit from "./endpoints/exit.js";
 import route_invite from "./endpoints/invite.js";
+import route_balance from "./endpoints/getBalance.js";
 
 import route_expenses_new from "./expenses_endpoints/new.js"
 
@@ -51,6 +52,9 @@ router.use("", route_exit);
 
 router.use("", route_invite);
 //      /event/exit
+
+router.use("", route_balance);
+//      /event/balance
 
 
 router.use("/expenses", route_expenses_new);

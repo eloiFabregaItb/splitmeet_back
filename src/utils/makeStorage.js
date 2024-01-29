@@ -27,7 +27,6 @@ export function makeStorageSingleFile(url,
     },
     filename:async function (req, file, done) {
       //this 2 lines does the same as <jwtVerify>
-      console.log(req.body)
       const user = await jwtUserFromToken(req.body.token)
       req.user = user
 
