@@ -89,7 +89,8 @@ export class Event {
     if(!this.users) await this.getUsers()
 
     const balance = this.expenses.getBalance(this.users)
-
+    
     return balance
   }
 }
+
