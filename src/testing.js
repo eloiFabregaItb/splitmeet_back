@@ -6,7 +6,12 @@ import {
 import { User } from "./models/User.js";
 import { Event } from "./models/Event.js";
 import { sendEmail } from "./mail/mail.js";
+import axios from "axios";
+import { hashPassword } from "./utils/crypto.js";
 // import multer from "multer";
+console.log("__________________________");
+console.log("THIS IS TESTING");
+
 
 //TABLES
 // const tables = await db.query("SHOW TABLES");
@@ -60,6 +65,18 @@ const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?", [
 const user = new User(rows[0]);
 user.signJWT();
 console.log(user.name, user.jwt);
+const token = user.jwt
+console.log("TOEKN");
+console.log();
+
+
+const updatedFields = {
+  name: "NuevoNombre",
+  mail: "nuevo@mail.com",
+  password: hashPassword("a"),
+};
+
+
 
 // const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [
 //   "user3",
@@ -238,4 +255,10 @@ function hasRemainingDebts(debtMatrix) {
 
 const debtMatrix = [[0, -5, -6], [5, 0, 7], [6, -7, 0]];
 const optimalTransactions = simplifyDebts(debtMatrix);
-console.log(optimalTransactions)
+// console.log(optimalTransactions)
+
+
+
+
+
+console.log("__________________________");
