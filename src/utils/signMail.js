@@ -3,7 +3,7 @@ import { jwtSign } from "./jwt.js";
 
 const MAIL_VALIDATE = "MAIL_VALIDATE";
 
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://splitmeet.ddns.net";
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://split-meet:4433";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secretJWT";
 

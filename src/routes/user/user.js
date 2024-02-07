@@ -2,6 +2,7 @@ import express from "express";
 
 import route_profileImg from "./endpoints/profileImg.js";
 import route_events from "./endpoints/events.js";
+import route_updateUser from "./endpoints/updateUser.js";
 // import route_lastTransactions from "./endpoints/lastTransactions.js";
 
 const router = express.Router();
@@ -16,6 +17,9 @@ router.use("", route_events);
 // router.use("", route_lastTransactions);
 //  /user/lastTransactions
 
+router.use("", route_updateUser);
+//  /user/updateUser
+
 router.get("/profile", (req, res) => {
   if (req.isAuthenticated()) {
     const user = req.user;
@@ -26,3 +30,5 @@ router.get("/profile", (req, res) => {
 });
 
 router.post("/profileImg", async (req, res) => {});
+
+router.post("/updateUser", async (req, res) => {});
