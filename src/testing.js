@@ -59,23 +59,23 @@ console.log("THIS IS TESTING");
 // await db.query(`DELETE FROM User_participation WHERE usr_id = ?`,['1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
 
 //JWT OF USER
-const [rows] = await db.query("SELECT * FROM Users WHERE usr_id =  ?", [
-  "85d45e67-f9c9-44b0-8946-f9e9f8443c4a",
-]);
-const user = new User(rows[0]);
-user.signJWT();
-console.log(user.name, user.jwt);
-const token = user.jwt
-console.log("TOEKN");
-console.log();
+const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", ["user4"]);
+// const user = new User(rows[0]);
+// user.signJWT();
+// console.log(user.name, user.jwt);
+// const token = user.jwt
+// console.log("TOEKN");
+// console.log();
 
 
-const updatedFields = {
-  name: "NuevoNombre",
-  mail: "nuevo@mail.com",
-  password: hashPassword("a"),
-};
+// const updatedFields = {
+//   name: "NuevoNombre",
+//   mail: "nuevo@mail.com",
+//   password: hashPassword("a"),
+// };
 
+// const [users] = await db.query("SELECT usr_mail FROM Users");
+// console.log(users)
 
 
 // const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", [

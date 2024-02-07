@@ -47,7 +47,6 @@ export class Event {
 
     this.users = users;
     this.creator = users.find((x) => x.isCreator);
-    // console.log(this.users);
 
     return users;
   }
@@ -68,6 +67,10 @@ export class Event {
     }
     if (this.creator) {
       result.creator = this.creator.publicData();
+    }
+
+    if (this.expenses){
+      result.expenses = this.expenses.publicData()
     }
 
     return result;

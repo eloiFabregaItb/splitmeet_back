@@ -6,9 +6,6 @@ export class Expenses{
 
     const expensesList = Object.values(Object.groupBy(rows,v=>v.exp_id))
     this.list = expensesList.map(x=>new Expense(x))
-    // console.log(this.list)
-    // console.log(this.list[0])
-    // console.log(this.list[1])
 
   }
 
@@ -20,8 +17,6 @@ export class Expenses{
     las columnas representan los usuarios que han pedido
     
     */
-
-    console.log(JSON.stringify(this.list.map(({id,concept,description,date,coords,photos,...x})=>x),undefined,2))
 
     const userIds = users.map(x=>x.id)
     
@@ -43,12 +38,22 @@ export class Expenses{
       }
     }
 
-    // console.log(userIds)
-    // console.log(balanceMatrix)
-
     this.balance = balanceMatrix
     return balanceMatrix
 
+  }
+
+
+  publicData(){
+    const result = {
+      list:this.list,
+      
+    }
+    if(this.balance){
+      result.balance=this.balance
+    }
+
+    return result
   }
 
 }

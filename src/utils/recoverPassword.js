@@ -1,18 +1,17 @@
-import jwt from "jsonwebtoken";
-import { jwtSign } from "./jwt.js";
+import jwt from "jsonwebtoken"
+import { jwtSign } from "./jwt.js"
 
-const METHOD = "MAIL_VALIDATE";
+const METHOD = "PASSWORD_FORGOTTEN"
 
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://split-meet:4433";
-
 const JWT_SECRET = process.env.JWT_SECRET || "secretJWT";
 
-export function generateMailValidationUrl(user_id) {
-  const token = jwtSign({ user_id, method: METHOD }, "24h");
-  return FRONTEND_URL + "/validateMail/" + token;
+export function generateRepasswordUrl(user_id) {
+  const token = jwtSign({ user_id, method: METHOD }, "1h");
+  return FRONTEND_URL + "/change-password/" + token;
 }
 
-export async function checkMailValidationUrl(token) {
+export async function checkRepasswordUrl(token) {
   if (!token) return;
 
   const {
