@@ -60,7 +60,8 @@ console.log("THIS IS TESTING");
 
 //JWT OF USER
 const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", ["user4"]);
-// const user = new User(rows[0]);
+const user = new User(rows[0]);
+console.log(user)
 // user.signJWT();
 // console.log(user.name, user.jwt);
 // const token = user.jwt

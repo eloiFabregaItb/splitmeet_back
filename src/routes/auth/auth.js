@@ -12,6 +12,7 @@ import googleRouter from "./endpoints/google.js";
 import validateMailRouter from "./endpoints/validateMail.js";
 import resendValidate from "./endpoints/resendValidate.js"
 import forgotten from "./endpoints/forgotten.js"
+import recoverPassword from "./endpoints/recoverPassword.js"
 
 router.use("", loginRouter);
 //        /auth/login
@@ -32,6 +33,10 @@ router.use("",resendValidate);
 
 router.use("",forgotten);
 //        /auth/forgotten
+
+
+router.use("",recoverPassword);
+//        /auth/recoverPassword
 
 //test protected route
 router.post("/protected", jwtVerify, async (req, res) => {

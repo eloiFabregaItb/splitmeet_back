@@ -1,7 +1,6 @@
 import express from "express";
 
 import db from "../../../db/db.js";
-import { checkMailValidationUrl } from "../../../utils/signMail.js";
 import { User } from "../../../models/User.js";
 import { generateRepasswordUrl } from "../../../utils/recoverPassword.js";
 import { sendEmail } from "../../../mail/mail.js";
@@ -19,8 +18,6 @@ router.post("/forgotten", async (req, res) => {
       return res.json({success:false, message:"Email is required"})
     }
 
-    console.log(email)
-
     const [users] = await db.query("SELECT * FROM Users WHERE usr_mail = ?",[email])
 
     if(users.length===0){
@@ -36,7 +33,7 @@ router.post("/forgotten", async (req, res) => {
       validationLink: repasswordUrl
     }
 
-    sendEmail("./src/mail/templates/forgotten-password.ejs",templateData)
+    sendEmail("./src/mail/templates/forgotten-password.ejs", user.mail, "Forgotten Password",templateData)
 
     // //retornar un success
     return res.json({ success: true });

@@ -135,9 +135,16 @@ export async function db_getOrRegisterUserGoogleOauth(googleProfile){
 
 
 
-
+/**
+ * 
+ * @param {User} user objeto user
+ * @param {Array} fields array of fields to update: ["usr_mail","usr_password",...]
+ */
 export async function db_updateUserFields(user,fields){
 
+
+
+  //campos de usuario
   const allFields = {
     usr_mail_validated:user.mailValidated,
     usr_mail:user.mail,
@@ -149,10 +156,12 @@ export async function db_updateUserFields(user,fields){
     usr_date_creation:user.dateCreation,
   }
 
+  //crea sintaxis con los nombres de las columnas
   const syntax = `UPDATE Users SET 
-  ${fields.map(x=>allFields[x] ? x + " = ? ":"").join(",")}
+  ${fields.map(x=>allFields.hasOwnProperty(x) ? x + " = ? ":"").join(",")}
   WHERE usr_id = ?`
     
+  //array de valores para insertar
   const values = fields.flatMap(x=>allFields[x]?allFields[x]:[])
   values.push(user.id)
 

@@ -1,18 +1,16 @@
 import express from 'express';
 import { jwtVerify } from "../../../utils/jwt.js";
-import { db_getUserByJWT, db_updateUserFields } from '../../../db/db_users.js';
+import { db_updateUserFields } from '../../../db/db_users.js';
 import { hashPassword } from '../../../utils/crypto.js';
 
 const router = express.Router();
 
 
-
-// Update user's name endpoint
-
 // Update user's name endpoint
 // POST /user/updateUser
 router.post('/updateUser', jwtVerify, async (req, res) => {
   const updatedFields = req.body;
+  
 
   try {
 
@@ -66,7 +64,7 @@ router.post('/updateUser', jwtVerify, async (req, res) => {
     await db_updateUserFields(user, dbFields);
     // console.log(user);
 
-    res.json({ success:true, message: 'User updated successfully', user });
+    res.json({ success:true, message: 'User updated successfully', user:user.publicData() });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success:false, error: 'Internal server error' });
