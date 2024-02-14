@@ -30,11 +30,9 @@ router.post('/recoverPassword', async (req, res) => {
 
     
     
-    const encryptedPassword = hashPassword(user.password)
-    console.log("OLD PASSWORD", user.password)
-    console.log("NEW PASSWORD", encryptedPassword)
+    const encryptedPassword = hashPassword(newPassword)
+    
     user.password = encryptedPassword
-
     await db_updateUserFields(user,["usr_password"])
 
     res.json({ success:true, message: 'User updated successfully', user:user.publicData() });
