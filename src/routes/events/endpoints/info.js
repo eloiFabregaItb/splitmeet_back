@@ -81,7 +81,7 @@ router.post("/info", jwtVerify, async (req, res) => {
 
   try {
     //retornar un success
-    return res.json({ success: true, users, expenses, event });
+    return res.json({ success: true, users:users.map(x=>x.publicData()), expenses, event });
   } catch {
     return res.json({ success: false, msg: "An error occurred" });
   }
