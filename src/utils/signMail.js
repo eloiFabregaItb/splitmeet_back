@@ -19,10 +19,10 @@ export async function checkMailValidationUrl(token) {
     // iat: generationDate,
     // exp: expirationDate,
     method,
-    usr_id,
+    user_id,
   } = jwt.verify(token, JWT_SECRET);
 
-  if (method !== METHOD || !usr_id) return undefined;
+  if (method !== METHOD || !user_id) return undefined;
 
-  return usr_id; //await db_getUserByID(usr_id);
+  return user_id; //await db_getUserByID(usr_id);
 }

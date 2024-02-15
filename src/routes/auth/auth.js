@@ -25,7 +25,7 @@ router.use("/google", googleRouter);
 //        /auth/google
 //        /auth/google/callback
 
-router.use("cod", validateMailRouter);
+router.use("", validateMailRouter);
 //        /auth/validateMail
 
 router.use("",resendValidate);
