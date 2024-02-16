@@ -14,18 +14,13 @@ router.post("/info", jwtVerify, async (req, res) => {
     return res.status(400).json({ success: false, msg: "No event found" });
   }
   const ev = req.event;
+  await ev.getUsers()
+  // console.log("EVENT",ev)
 
-  const [users] = await db.query(
-    `SELECT User_participation.active, Users.usr_id, Users.usr_mail, Users.usr_name, Users.usr_img
-  FROM Events
-  INNER JOIN User_participation ON Events.evt_id = User_participation.evt_id
-  INNER JOIN Users ON User_participation.usr_id = Users.usr_id
-  WHERE Events.evt_url = ?;`,
-    [ev.url]
-  );
-
+  const users = ev.users
+  
   //comprobar que el request es de un usuario interno al grupo
-  if (!users.some((x) => x.usr_id === req.user.id && x.active)) {
+  if (!users.some((x) => x.id === req.user.id)) {
     return res.status(400).json({
       success: false,
       msg: "You are not joined",
@@ -46,15 +41,10 @@ router.post("/info", jwtVerify, async (req, res) => {
   //UNFLAT EXPENSES
   const expenses_group = Object.groupBy(expenses_db, (e) => e.exp_id);
 
+  await ev.getBalances()
   const event = ev.publicData();
 
   const expenses = Object.values(expenses_group).map((exp) => {
-    console.log("USER", req.user.id);
-    console.log("LENDER", exp[0].usr_id_lender);
-    console.log(
-      "EXPENSES",
-      exp.map((x) => x.usr_id_borrower)
-    );
 
     const currentExpense = {
       exp_id: exp[0]?.exp_id,
@@ -91,8 +81,12 @@ router.post("/info", jwtVerify, async (req, res) => {
 
   try {
     //retornar un success
-    return res.json({ success: true, users, expenses, event });
+    return res.json({ success: true, users:users.map(x=>x.publicData()), expenses, event });
   } catch {
     return res.json({ success: false, msg: "An error occurred" });
   }
 });
+
+
+
+
