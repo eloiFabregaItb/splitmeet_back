@@ -30,5 +30,3 @@ router.get("/profile", (req, res) => {
 });
 
 router.post("/profileImg", async (req, res) => {});
-
-router.post("/updateUser", async (req, res) => {});

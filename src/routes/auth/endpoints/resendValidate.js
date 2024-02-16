@@ -15,8 +15,6 @@ export default router
 router.post("/resendValidate", jwtVerify, async (req,res)=>{
   const user = req.user
 
-  console.log(user)
-
   // send email
   
   const templateData = {
