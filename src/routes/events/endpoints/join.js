@@ -24,7 +24,7 @@ router.post('/join',jwtVerify, async (req, res) => {
 
     try{
 
-      const [rows] = db.query("SELECT * FROM User_participation WHERE evt_id = ? AND usr_id = ?",[req.event.id,req.user.id])
+      const [rows] = await db.query("SELECT * FROM User_participation WHERE evt_id = ? AND usr_id = ?",[req.event.id,req.user.id])
       if(rows.length>0){
         if(!rows[0].active){
           db.query("UPDATE User_participation SET active = 1 WHERE evt_id = ? AND usr_id = ?",[req.event.id,req.user.id])
