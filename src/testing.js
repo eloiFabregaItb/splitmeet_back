@@ -21,6 +21,11 @@ console.log("THIS IS TESTING");
 // let [rows, fields] = await db.query("SELECT * FROM User_participation");
 // console.log(rows);
 
+
+// //DB SELECT
+// let [rows, fields] = await db.query("SELECT * FROM Users");
+// console.log(rows);
+
 // let [rowsEvent] = await db.query("SELECT * FROM Events WHERE evt_id = ?",["c86e47e7-0f88-424d-8ccb-2937c0535bc2"]);
 // const ev = new Event(rowsEvent[0])
 // // console.log(ev)
@@ -57,6 +62,12 @@ console.log("THIS IS TESTING");
 
 //DB DELETE
 // await db.query(`DELETE FROM User_participation WHERE usr_id = ?`,['1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p'])
+
+// ALL PARTICIPATE
+// await db.query("UPDATE User_participation SET active = 1 WHERE active = 0");
+
+
+
 
 //JWT OF USER
 // const [rows] = await db.query("SELECT * FROM Users WHERE usr_name =  ?", ["user4"]);
