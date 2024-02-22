@@ -1,3 +1,5 @@
+import { simplifyTransactionMatrix } from "../../algorithm/splitmeet.js"
+
 export class Expenses{
   constructor(rows){
     this.list = [] //las lista de expenses
@@ -10,6 +12,8 @@ export class Expenses{
   }
 
   getBalance(users){
+
+    this.users = users
 
     /*
     GENERA MATRIZ DE PRESTAMOS
@@ -51,6 +55,8 @@ export class Expenses{
     }
     if(this.balance){
       result.balance=this.balance
+      result.simply = simplifyTransactionMatrix(this.balance,this.users)    
+
     }
 
     return result

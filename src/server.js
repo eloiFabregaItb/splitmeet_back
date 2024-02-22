@@ -37,13 +37,13 @@ const app = express();
 const server = createServer(app);
 
 // ----------- SOCKET.IO -----------
-export const io = new Server(server, {
-  connectionStateRecovery: {},
-  cors: {
-    origin: "*", //"https://apps.fabrega.cat/fileUpload/"//'http://localhost:5173',
-  },
-});
-io.on("connection", socketRecieverManager);
+// export const io = new Server(server, {
+//   connectionStateRecovery: {},
+//   cors: {
+//     origin: "*", //"https://apps.fabrega.cat/fileUpload/"//'http://localhost:5173',
+//   },
+// });
+// io.on("connection", socketRecieverManager);
 
 // ---------CORS-------------
 app.use(cors());
@@ -80,8 +80,6 @@ app.use("/user", router_user);
 app.use("/event", router_events);
 if (!IS_IN_PRODUCTION) {
   app.use("/test", router_test);
-
-
 }
 
 // ----------- SERVER -----------

@@ -5,31 +5,30 @@ import { hashPassword } from '../../../utils/crypto.js';
 
 const router = express.Router();
 
+//public : DB
+const fieldMappings = {
+  'name': 'usr_name',
+  'mail': 'usr_mail',
+  'password': 'usr_password',
+  //'oldPassword'
+};
 
 // Update user's name endpoint
 // POST /user/updateUser
 router.post('/updateUser', jwtVerify, async (req, res) => {
   const updatedFields = req.body;
-  
+
+  const user = req.user;  
 
   try {
 
-    const user = req.user;
+    const fieldsToUpdate = []
 
-    //public : DB
-    const fieldMappings = {
-      'name': 'usr_name',
-      'mail': 'usr_mail',
-      'password': 'usr_password',
-      //'oldPassword'
-    };
-
-    const dbFields = Object.keys(updatedFields).map(key => fieldMappings[key] || key );
-
-    let some = false
     for (const field in updatedFields) {
-      if (user.hasOwnProperty(field)) {
-        some = true
+      
+      if (user.hasOwnProperty(field) && updatedFields[field] && field !== "token" ) { // usuario tiene el campo
+
+        fieldsToUpdate.push(fieldMappings[field])
 
         if(field === "password"){
 
@@ -49,6 +48,7 @@ router.post('/updateUser', jwtVerify, async (req, res) => {
           }
 
           user[field] = newPassword
+
           
         }else{
           user[field] = updatedFields[field];
@@ -57,11 +57,11 @@ router.post('/updateUser', jwtVerify, async (req, res) => {
       }
     }
 
-    if(!some){
+    if(fieldsToUpdate.length === 0){
       return res.json({success:false,message:"Ningun campo"})
     }
 
-    await db_updateUserFields(user, dbFields);
+    await db_updateUserFields(user, fieldsToUpdate );
     // console.log(user);
 
     res.json({ success:true, message: 'User updated successfully', user:user.publicData() });

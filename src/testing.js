@@ -75,9 +75,6 @@ console.log("THIS IS TESTING");
 // console.log(user)
 // user.signJWT();
 // console.log(user.name, user.jwt);
-// const token = user.jwt
-// console.log("TOEKN");
-// console.log();
 
 
 // const updatedFields = {

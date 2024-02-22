@@ -23,9 +23,11 @@ export default router
 //ruta de ceracion
 const PROFILE_IMG_URL = "public/usrProfilePic/"
 const storage = makeStorageSingleFile(PROFILE_IMG_URL,({user,extension})=>{
-  if(user.img){
+  console.log(user)
+  if(user.img && user.img !== "NULL"){
     //si ya tiene una imagen
     const oldExtension = path.extname(user.img)
+
     if(oldExtension === extension){
       return user.img
     }else{
@@ -46,7 +48,7 @@ const upload = multer({ storage });
 
 
 //POST /user/profileImg
-router.post('/profileImg',upload.single("img"),async (req, res) => {
+router.post('/profileImg', upload.single("img"),async (req, res) => {
 
   if (!req.file) {
     return res.status(400).json({ success:false,msg: 'No file uploaded'});
@@ -59,7 +61,7 @@ router.post('/profileImg',upload.single("img"),async (req, res) => {
   db_updateUserFields(user,["usr_img"])
   
   //retornar un success
-  return res.json({ success: true});
+  return res.json({ success: true, user});
       
 })
 

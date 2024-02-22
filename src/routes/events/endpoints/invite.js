@@ -3,8 +3,8 @@ import express from "express";
 import { jwtVerify } from "../../../utils/jwt.js";
 import { sendEmail } from "../../../mail/mail.js";
 import { db_getUserByEmail } from "../../../db/db_users.js";
-import { getHashedLandscape } from "../../../../../splitmeet_front/src/services/getHashedLandscape.js";
-import { api_url } from "../../../../../splitmeet_front/src/utils/constants.js";
+import { getHashedLandscape } from "../../../utils/getHashedLandscape.js"
+import { api_url } from "../../../utils/constants.js";
 
 
 const router = express.Router();

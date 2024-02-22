@@ -12,11 +12,13 @@ import axios from "axios";
 // Initialize Express Router
 const router = express.Router();
 export default router;
+let globalEvtUrl;
 
 // Test route
 router.post("/test", (req, res) => {
   res.send("HOLA :)");
 });
+
 
 
 // Determine the callback URL based on the environment
@@ -28,6 +30,18 @@ const GOOGLE_CALLBACK_URL = isProduction
   : "http://localhost:3000/auth/google/callback";
 
 console.log(GOOGLE_CALLBACK_URL);
+
+router.get('/', (req, res, next) => {
+  // Obtener el valor del parámetro llamado 'parametro' de la URL
+  const evtUrl = req.query.evt_url;
+  console.log(evtUrl);
+  if (evtUrl) {
+    // Guardar evtUrl en la sesión
+    globalEvtUrl = evtUrl;
+  }
+
+  next();
+});
 
 // app.use(passport.initialize());
 // app.use(passport.session());
@@ -43,6 +57,7 @@ passport.deserializeUser(async (googleId, done) => {
   console.log("entyra jaaaa");
   try {
     const user = await db_getUserByGoogleId(googleId);
+
     if (user) {
       user.signJWT();
       return done(null, user.publicData());
@@ -63,28 +78,35 @@ router.get('/', passport.authenticate('google', {
 
 // Callback route after successful authentication
 router.get('/callback',
-  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
+  passport.authenticate('google', { failureRedirect: 'https://www.split-meet.com:4433/login' }),
   async (req, res) => {
-    try {
-      // Obtener el token JWT del proveedor de OAuth (en este caso, supongamos que está en el objeto req.user)
-      // const oauthToken = req.user.token;
+    req.user.signJWT();
+    console.log(req.user);
 
-      // Llamar a la función que realiza la solicitud con el token JWT
-      const responseData = await authenticateWithJWT(oauthToken);
-
-      console.log('Authentication successful!');
-      console.log(responseData);
-      res.status(200).json({ success: true, user: req.user });
-      // Redirigir al usuario a la página de inicio
-      // res.redirect('http://localhost:5173/home?token=' + oauthToken);
-    } catch (error) {
-      console.error('Error during authentication:', error);
-
-      // Redirigir al usuario a una página de error (puedes ajustar la URL según tus necesidades)
-      res.redirect('/error');
+    // Ejecutar el código después de iniciar sesión y redirigir al usuario a la página de destino
+    console.log(globalEvtUrl);
+    if (globalEvtUrl) {
+      try {
+        const response = await axios.post("https://api.split-meet.com:4433/event/join", {
+          token: req.user.jwt,
+          evt_url: globalEvtUrl,
+        });
+        if (response.data) {
+          console.log(response.data);
+          return res.redirect(`https://www.split-meet.com:4433`);
+        }
+      } catch (error) {
+        console.error('Error al unirse al evento:', error);
+        // Manejar el error de unirse al evento según sea necesario
+        return res.redirect(`https://www.split-meet.com:4433`);
+      }
+    } else {
+      // Si no se proporciona evt_url, redirige a la página predeterminada
+      return res.redirect(`https://www.split-meet.com:4433`);
     }
   }
 );
+
 
 // Función que realiza la autenticación con el token JWT
 async function authenticateWithJWT(jwt) {
@@ -109,6 +131,7 @@ passport.use(new GoogleStrategy({
   callbackURL: GOOGLE_CALLBACK_URL,
 }, async (accessToken, refreshToken, profile, done) => {
   try {
+
     const user = await db_getOrRegisterUserGoogleOauth(profile);
     // Update user object with email or other necessary information
     return done(null, user);
