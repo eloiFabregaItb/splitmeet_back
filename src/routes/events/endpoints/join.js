@@ -19,7 +19,7 @@ router.post('/join',jwtVerify, async (req, res) => {
     const users = await ev.getUsers()
 
     if(users.some(x=>x.id === req.user.id)){
-      return res.status(400).json({success:false,msg:"Already joined",error_code:"ALREADY_DONE"})
+      return res.status(400).json({success:true,msg:"Already joined",error_code:"ALREADY_DONE"})
     }
 
     try{

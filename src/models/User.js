@@ -11,7 +11,8 @@ export class User {
     usr_img,
     usr_date_creation,
     usr_google_id,
-    usr_mail_validated = false
+    usr_mail_validated = false,
+    active
   }) {
     this.id = usr_id //private
     this.mail = usr_mail
@@ -22,6 +23,7 @@ export class User {
     this.dateCreation = usr_date_creation //private
     this.googleId = usr_google_id  //private
     this.mailValidated = usr_mail_validated
+    this.active=active
   }
 
   //create a user from google credentials
@@ -51,8 +53,14 @@ export class User {
       name:this.name,
       oauth:this.oauth,
       img:this.img === "NULL" || !null ? "default.png" : this.img,
-      mailValidated:this.mailValidated
+      mailValidated:this.mailValidated,
+      id:this.id
     }
+
+    if(this.active !== undefined){
+      result.active=this.active
+    }
+    
 
     if(this.jwt){
       result.jwt=this.jwt
