@@ -3,6 +3,8 @@ import express from "express";
 import { jwtVerify } from "../../../utils/jwt.js";
 import { sendEmail } from "../../../mail/mail.js";
 import { db_getUserByEmail } from "../../../db/db_users.js";
+import { getHashedLandscape } from "../../../../../splitmeet_front/src/services/getHashedLandscape.js";
+import { api_url } from "../../../../../splitmeet_front/src/utils/constants.js";
 
 
 const router = express.Router();
@@ -29,6 +31,8 @@ router.post("/invite", jwtVerify, async (req, res) => {
   const validEmails = emails.filter(x=>emailRegex.test(x))
 
 
+  
+
 
   try {
 
@@ -37,6 +41,15 @@ router.post("/invite", jwtVerify, async (req, res) => {
       console.log(validEmails)
       for (const email of validEmails) {
         const usrEmail = await db_getUserByEmail(email)
+        console.log(ev.imgUrl);
+
+        if(!ev.imgUrl){
+          ev.imgUrl = await getHashedLandscape(ev.url)
+          console.log(ev.imgUrl);
+        }else{
+          ev.imgUrl = `${api_url}/public/evtPic/${ev.imgUrl}`
+          console.log(ev.imgUrl);
+        }
         await sendEmail(
           "./src/mail/templates/invitation-event-email.ejs",
           email,
@@ -45,8 +58,9 @@ router.post("/invite", jwtVerify, async (req, res) => {
             email,
             usr_name:usrEmail?.name || email,
             ivitator_name:req.user.name,
-            evnt_image:`172.30.4.55:3000/public/evtPic/${ev.imgUrl}`,
+            // evnt_image:`172.30.4.55:3000/public/evtPic/${ev.imgUrl}`,
             // evnt_image:`api.split-meet.com/public/evtPic/${ev.imgUrl}`,
+            evt_image: ev.imgUrl,
             string_mail:email,
             evnt_name:ev.name,
             evt_url:ev.url

@@ -63,20 +63,20 @@ router.get('/', passport.authenticate('google', {
 
 // Callback route after successful authentication
 router.get('/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
   async (req, res) => {
     try {
       // Obtener el token JWT del proveedor de OAuth (en este caso, supongamos que está en el objeto req.user)
-      const oauthToken = req.user.token;
+      // const oauthToken = req.user.token;
 
       // Llamar a la función que realiza la solicitud con el token JWT
       const responseData = await authenticateWithJWT(oauthToken);
 
       console.log('Authentication successful!');
       console.log(responseData);
-      
+      res.status(200).json({ success: true, user: req.user });
       // Redirigir al usuario a la página de inicio
-      res.redirect('http://localhost:5173/home');
+      // res.redirect('http://localhost:5173/home?token=' + oauthToken);
     } catch (error) {
       console.error('Error during authentication:', error);
 
