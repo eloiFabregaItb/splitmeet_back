@@ -22,8 +22,8 @@ export class Event {
     this.modification = evt_modification_timestamp;
   }
 
-  async getUsers() {
-    if (this.users) return this.users;
+  async getUsers(force=false) {
+    if (this.users && !force) return this.users;
 
     const [usersRows] = await db.query(
       `SELECT Users.*, User_participation.active FROM Users

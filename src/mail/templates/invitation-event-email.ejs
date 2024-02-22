@@ -4,51 +4,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Invitation</title>
+  <title>Email Template</title>
   <style>
-    body {
+    /* Estilos */
+    body,
+    html {
       margin: 0;
       padding: 0;
-      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
     }
 
     .container {
       max-width: 600px;
       margin: 20px auto;
-      background-color: white;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ccc;
+      background-color: #e1f5fe;
+      border-radius: 5px;
     }
 
-    h1, p {
+    h1 {
       color: #01579B;
     }
 
-    img {
-      max-width: 100%;
-      height: auto;
-      margin-top: 10px;
-      border-radius: 10px;
+    p {
+      margin-bottom: 15px;
     }
 
-    button {
+    a.button {
       padding: 10px 20px;
       background-color: #01579B;
       color: white;
       border: none;
       border-radius: 10px;
-      text-align: center;
       text-decoration: none;
       display: inline-block;
       font-size: 16px;
-      margin: 20px 0;
+      margin: 4px 2px;
       cursor: pointer;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
     }
   </style>
 </head>
 
-<body>
+<div class="container">
   <h1>Hello <%= usr_name %>!</h1>
   <p>
     <%= ivitator_name %> has invited you to this event:
@@ -56,13 +59,10 @@
   <p>
     <%= evnt_name %>
   </p>
-  <img src="<%= evnt_image %>" alt="Event Image">
+  <img src="<%= evt_image %>" alt="Event Image">
   <p>We hope to have you with us. Please click the button below to subscribe to the event:</p>
-  <a href="https://split-meet.com:4433/login/invitation?evt_url=<%= evt_url %>"
-    style="padding: 10px 20px; background-color: #01579B; color: white; border: none; border-radius: 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">
-    Subscribe
-  </a>
+  <a href="https://split-meet.com:4433/login/invitation?evt_url=<%= evt_url %>" class="button">Subscribe</a>
   <p>Thank you!</p>
-</body>
+</div>
 
 </html>

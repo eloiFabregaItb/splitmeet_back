@@ -4,16 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to SplitMeet</title>
+  <style>
+    /* Estilos */
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      background-color: #e1f5fe;
+      border-radius: 5px;
+    }
+
+    h1 {
+      color: #01579B;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    a.button {
+      padding: 10px 20px;
+      background-color: #01579B;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
+
+  <div class="container">
+
 
   <h1>Welcome to SplitMeet!</h1>
 
   <p>Hi <%= userName %>,</p>
 
-  <p>Welcome to SplitMeet! To get started, please validate your email by clicking this button</p>
+  <p>Welcome to SplitMeet! To get started, please validate your email by clicking this button. This link expires in 24 hours</p>
 
-  <a href="<%= validationLink %>">
+  <a href="<%= validationLink %>" class="container">
     <button style="padding: 10px 20px; background-color: #01579B; color: white; border: none; border-radius: 10px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Validate Mail</button>
   </a>
   <p>We're thrilled to have you on board. If you have any questions, feel free to reach out!</p>
@@ -22,6 +69,6 @@
 
 
   <p>Best regards,<br> SplitMeet Team</p>
-
+</div>
 </body>
 </html>
